@@ -1,7 +1,9 @@
 package rapbattles.rap_battles.Models.POJO;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
+@Getter
 public class User {
 
 
@@ -9,7 +11,7 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private String new_password;
+    private String second_password;
     private String salt;
 
 }
