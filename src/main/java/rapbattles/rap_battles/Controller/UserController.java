@@ -6,31 +6,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import rapbattles.rap_battles.Models.DAO.UserDAOImplem;
-import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
-import rapbattles.rap_battles.Util.EmailSender;
+import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
+import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
 
 import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(value = "/user")
-public class UserController {
+public class UserController extends BaseController{
 
     public static final String LOGGED = "logged";
 
-    static Logger log = Logger.getLogger(UserController.class.getName());
 
     @Autowired
-    UserDAOImplem dao;
+    UserServiceImplem usi;
 
-    //test
     @PostMapping(value = "/register")
-    public void registerUser(@RequestBody User user, HttpSession session){
-        dao.registerUser(user);
-        EmailSender email = new EmailSender(user.getEmail(),user.getUsername());
-        new Thread(email).start();
-        session.setAttribute(LOGGED, user);
+    public void registerUser(@RequestBody User user, HttpSession session) throws InvalidUsernameOrEmailException {
+        usi.registerUser(user, session);
     }
 
 

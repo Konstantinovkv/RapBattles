@@ -16,29 +16,29 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 public class testControllerTest {
 
-    private MockMvc mockMvc;
-
-    @InjectMocks
-    private TestController testController;
-
-    @Before
-    public void setUp(){
-        mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
-    }
-
-    @Test
-    public void testControllerTest() throws Exception {
-        mockMvc.perform(get("/test"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("test"));
-    }
-
-    @Test
-    public void testControllerTestJson() throws Exception{
-        mockMvc.perform(get("/json"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.text", Matchers.is("Testing")))
-                .andExpect(jsonPath("$.text2", Matchers.is(", testing 1,2,3.")))
-                .andExpect(jsonPath("$.*",Matchers.hasSize(2)));
-    }
+//    private MockMvc mockMvc;
+//
+//    @InjectMocks
+//    private TestController testController;
+//
+//    @Before
+//    public void setUp(){
+//        mockMvc = MockMvcBuilders.standaloneSetup(testController).build();
+//    }
+//
+//    @Test
+//    public void testControllerTest() throws Exception {
+//        mockMvc.perform(get("/test"))
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("test"));
+//    }
+//
+//    @Test
+//    public void testControllerTestJson() throws Exception{
+//        mockMvc.perform(get("/json"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.text", Matchers.is("Testing")))
+//                .andExpect(jsonPath("$.text2", Matchers.is(", testing 1,2,3.")))
+//                .andExpect(jsonPath("$.*",Matchers.hasSize(2)));
+//    }
 }

@@ -41,15 +41,15 @@ public class UserDAOImplem implements UserDAO {
 
     }
 
-    private SqlParameterSource getSqlParameterByModel(User user){
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        if(user != null){
-            parameterSource.addValue("user_ID", user.getUser_ID());
-            parameterSource.addValue("email", user.getEmail());
-            parameterSource.addValue("username", user.getUsername());
-            parameterSource.addValue("password", user.getPassword());
-            parameterSource.addValue("salt", user.getSalt());
-        }
-        return parameterSource;
-    }
+//    private SqlParameterSource getSqlParameterByModel(User user){
+//        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+//        if(user != null){
+//            parameterSource.addValue("user_ID", user.getUser_ID());
+//            parameterSource.addValue("email", user.getEmail());
+//            parameterSource.addValue("username", user.getUsername());
+//            parameterSource.addValue("password", user.getPassword());
+//            parameterSource.addValue("salt", user.getSalt());
+//        }
+//        return parameterSource;
+//    }
 }

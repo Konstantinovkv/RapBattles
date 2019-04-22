@@ -1,0 +1,4 @@
+2019-04-22--ERROR-rapbattles.rap_battles.Controller.UserController-19:This is not a valid email.
+2019-04-22--ERROR-rapbattles.rap_battles.Controller.UserController-19:This is not a valid email.
+2019-04-22--ERROR-rapbattles.rap_battles.Controller.UserController-19:This is not a valid email.
+2019-04-22--ERROR-rapbattles.rap_battles.Controller.UserController-19:This is not a valid username.
