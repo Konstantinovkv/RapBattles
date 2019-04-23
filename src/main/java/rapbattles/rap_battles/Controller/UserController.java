@@ -1,13 +1,11 @@
 package rapbattles.rap_battles.Controller;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
+import rapbattles.rap_battles.Util.Exceptions.InvalidPasswordException;
 import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
 
 import javax.servlet.http.HttpSession;
@@ -22,9 +20,14 @@ public class UserController extends BaseController{
     @Autowired
     UserServiceImplem usi;
 
-    @PostMapping(value = "/register")
-    public void registerUser(@RequestBody User user, HttpSession session) throws InvalidUsernameOrEmailException {
-        usi.registerUser(user, session);
+    @PostMapping("/register")
+    public UserDTO registerUser(@RequestBody User user, HttpSession session) throws InvalidUsernameOrEmailException, InvalidPasswordException {
+        return usi.addUser(user, session);
+    }
+
+    @PostMapping("/activate/{activation_code}")
+    public void activateAccount(@PathVariable(value = "activation_code") String activation_code){
+        usi.activateAccountService(activation_code);
     }
 
 

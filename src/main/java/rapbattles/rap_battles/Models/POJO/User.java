@@ -1,9 +1,11 @@
 package rapbattles.rap_battles.Models.POJO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@NoArgsConstructor
 @Getter
+@Setter
+@NoArgsConstructor
 public class User {
 
 
@@ -13,5 +15,6 @@ public class User {
     private String password;
     private String second_password;
     private String salt;
+    private boolean activated;
 
 }

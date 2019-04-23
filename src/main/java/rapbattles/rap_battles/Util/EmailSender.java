@@ -10,17 +10,20 @@ import java.util.Date;
 import java.util.Properties;
 
 public class EmailSender implements Runnable{
+
     static Logger log = Logger.getLogger(EmailSender.class.getName());
 
     private String email;
     private String name;
+    private String activation_code;
 
-    public EmailSender(String email, String name) {
+    public EmailSender(String email, String name, String activation_code) {
         this.email = email;
         this.name = name;
+        this.activation_code = activation_code;
     }
 
-    public String sendEmail(String email, String name) throws MessagingException {
+    public String sendEmail(String email, String name, String activation_code) throws MessagingException {
 
         final String username = "FinalProjectITTnoReply@gmail.com";
         final String password = "A12345678@a";
@@ -41,7 +44,7 @@ public class EmailSender implements Runnable{
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         msg.setSubject("Registration complete");
-        msg.setContent("Congratulations "+name+"! You have successfully completed your registration for RapBattles.", "text/html");
+        msg.setContent("Congratulations "+name+"! You have successfully completed your registration for RapBattles. Please visit this link to activate your account: localhost:8080/user//activate/"+activation_code, "text/html");
         msg.setSentDate(new Date());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();
@@ -53,7 +56,7 @@ public class EmailSender implements Runnable{
     @Override
     public void run(){
         try {
-            sendEmail(email,name);
+            sendEmail(email,name,activation_code);
         } catch (MessagingException e) {
             log.error(e.getMessage());
             e.getMessage();
