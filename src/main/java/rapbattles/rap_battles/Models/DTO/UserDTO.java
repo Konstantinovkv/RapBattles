@@ -14,7 +14,4 @@ public class UserDTO {
     private String email;
     private boolean activated;
 
-    public UserDTO(String username) {
-        this.username = username;
-    }
 }

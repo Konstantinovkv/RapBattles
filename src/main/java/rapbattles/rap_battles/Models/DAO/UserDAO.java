@@ -5,14 +5,16 @@ import rapbattles.rap_battles.Models.POJO.User;
 
 public interface UserDAO {
 
-    public void registerUser(User user);
+    void registerUser(User user);
 
-    public UserDTO findUserByEmail(String email);
+    UserDTO findUserByEmailDTO(String email);
 
-    public UserDTO findUserByID(int user_ID);
+    User findUserByEmail(String email);
 
-    public UserDTO findUserByUsername(String username);
+    UserDTO findUserByID(int user_ID);
 
-    public void deleteUserByID(int user_ID);
+    UserDTO findUserByUsernameDTO(String username);
+
+    void deleteUserByID(int user_ID);
 
 }

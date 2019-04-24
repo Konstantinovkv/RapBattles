@@ -27,10 +27,21 @@ public class UserDAOImplem implements UserDAO {
 
 
     @Override
-    public UserDTO findUserByEmail(String email) {
+    public UserDTO findUserByEmailDTO(String email) {
         try{
         String sql = "SELECT user_ID, email, username, activated FROM users WHERE email = ?";
         return (UserDTO) jdbc.queryForObject(sql, new Object[]{email}, new UserDTOMapper());
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        try{
+            String sql = "SELECT user_ID, email, username, password, second_password, salt, activated FROM users WHERE email = ?";
+            return (User) jdbc.queryForObject(sql, new Object[]{email}, new UserMapper());
         }
         catch (EmptyResultDataAccessException e){
             return null;
@@ -49,10 +60,20 @@ public class UserDAOImplem implements UserDAO {
     }
 
     @Override
-    public UserDTO findUserByUsername(String username) {
+    public UserDTO findUserByUsernameDTO(String username) {
         try{
         String sql = "SELECT user_ID, email, username, activated FROM users WHERE username = ?";
         return (UserDTO) jdbc.queryForObject(sql, new Object[]{username}, new UserDTOMapper());
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public User findUserByUsername(String username){
+        try{
+            String sql = "SELECT user_ID, email, username, password, second_password, salt, activated FROM users WHERE username = ?";
+            return (User) jdbc.queryForObject(sql, new Object[]{username}, new UserMapper());
         }
         catch (EmptyResultDataAccessException e){
             return null;

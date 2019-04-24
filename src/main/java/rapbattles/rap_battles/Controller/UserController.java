@@ -5,9 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
-import rapbattles.rap_battles.Util.Exceptions.InvalidPasswordException;
-import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
-import rapbattles.rap_battles.Util.Exceptions.WrongActivationCodeException;
+import rapbattles.rap_battles.Util.Exceptions.*;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,6 +22,11 @@ public class UserController extends BaseController{
     @PostMapping("/register")
     public UserDTO registerUser(@RequestBody User user, HttpSession session) throws InvalidUsernameOrEmailException, InvalidPasswordException {
         return usi.addUser(user, session);
+    }
+
+    @PostMapping(value = "/login")
+    public UserDTO loginUser(@RequestBody User user, HttpSession session) throws WrongEmailOrPasswordException, AccountNotActivatedException {
+        return usi.login(user,session);
     }
 
     @GetMapping("/activate/{activation_code}")
