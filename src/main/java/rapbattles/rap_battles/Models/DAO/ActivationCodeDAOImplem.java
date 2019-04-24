@@ -39,25 +39,4 @@ public class ActivationCodeDAOImplem implements ActivationCodeDAO{
         return new UserActivationCode(rs.getInt("user_ID"), rs.getString("activation_code"));
     }
 
-    private static final class UserActivationCodeRowMapper implements RowMapper {
-
-        public UserActivationCode mapRow(ResultSet rs, int rowNum) throws SQLException {
-            UserActivationCode userActivationCode = new UserActivationCode();
-            userActivationCode.setUser_ID(rs.getInt("user_ID"));
-            userActivationCode.setActivation_code(rs.getString("activation_code"));
-
-            return userActivationCode;
-        }
-    }
-
-
-    private SqlParameterSource getSqlParameterByModel(UserActivationCode userActivationCode){
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        if(userActivationCode != null){
-            parameterSource.addValue("user_ID", userActivationCode.getUser_ID());
-            parameterSource.addValue("activation_code", userActivationCode.getActivation_code());
-        }
-        return parameterSource;
-    }
-
 }

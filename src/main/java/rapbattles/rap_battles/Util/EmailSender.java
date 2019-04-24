@@ -44,7 +44,8 @@ public class EmailSender implements Runnable{
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         msg.setSubject("Registration complete");
-        msg.setContent("Congratulations "+name+"! You have successfully completed your registration for RapBattles. Please visit this link to activate your account: localhost:8080/user//activate/"+activation_code, "text/html");
+        msg.setContent("Congratulations "+name+"! You have successfully completed your registration for RapBattles." +
+                " Please click on the link to activate your account: <a href=\"http://localhost:8080/user//activate/"+activation_code+"\">Activation link</a>", "text/html");
         msg.setSentDate(new Date());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();

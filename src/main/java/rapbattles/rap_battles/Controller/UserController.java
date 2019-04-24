@@ -7,6 +7,7 @@ import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.InvalidPasswordException;
 import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
+import rapbattles.rap_battles.Util.Exceptions.WrongActivationCodeException;
 
 import javax.servlet.http.HttpSession;
 
@@ -25,9 +26,10 @@ public class UserController extends BaseController{
         return usi.addUser(user, session);
     }
 
-    @PostMapping("/activate/{activation_code}")
-    public void activateAccount(@PathVariable(value = "activation_code") String activation_code){
+    @GetMapping("/activate/{activation_code}")
+    public String activateAccount(@PathVariable(value = "activation_code") String activation_code) throws WrongActivationCodeException {
         usi.activateAccountService(activation_code);
+        return "<h1>Your account has been activated.</h1>";
     }
 
 

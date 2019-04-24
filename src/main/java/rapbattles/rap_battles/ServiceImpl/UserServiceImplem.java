@@ -11,6 +11,7 @@ import rapbattles.rap_battles.Service.UserService;
 import rapbattles.rap_battles.Util.EmailSender;
 import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
 import rapbattles.rap_battles.Util.Exceptions.InvalidPasswordException;
+import rapbattles.rap_battles.Util.Exceptions.WrongActivationCodeException;
 import rapbattles.rap_battles.Util.PasswordUtils;
 
 import javax.servlet.http.HttpSession;
@@ -123,7 +124,10 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //activates account
-    public void activateAccountService(String activation_code){
+    public void activateAccountService(String activation_code) throws WrongActivationCodeException {
+        if (activationDao.findUserIdByActivationCode(activation_code)==null){
+            throw new WrongActivationCodeException("The activation code is wrong.");
+        }
         UserDTO userDTO = dao.findUserByID(activationDao.findUserIdByActivationCode(activation_code).getUser_ID());
         dao.setActiveToTrue(userDTO);
     }

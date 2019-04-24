@@ -9,8 +9,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
-
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -23,8 +21,8 @@ public class UserDAOImplem implements UserDAO {
     //adds a user to the users table
     @Override
     public void registerUser(User user) {
-        String sql = "INSERT INTO users(email,username,password,second_password) VALUES(?,?,?,?)";
-        jdbc.update(sql, new Object[]{user.getEmail(), user.getUsername(), user.getPassword(), user.getSecond_password()});
+        String sql = "INSERT INTO users(email,username,password,second_password,salt) VALUES(?,?,?,?,?)";
+        jdbc.update(sql, new Object[]{user.getEmail(), user.getUsername(), user.getPassword(), user.getSecond_password(), user.getSalt()});
     }
 
 

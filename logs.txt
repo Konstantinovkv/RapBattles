@@ -1,4 +1,0 @@
-2019-04-23--ERROR-rapbattles.rap_battles.Controller.UserController-20:This username is already taken.
-2019-04-23--ERROR-rapbattles.rap_battles.Controller.UserController-20:Password must be 8 characters or more, have at least one upper and lower case character and have at least 1 special character and digit and no spaces.
-2019-04-23--ERROR-rapbattles.rap_battles.Controller.UserController-20:This username is already taken.
-2019-04-23--ERROR-rapbattles.rap_battles.Controller.UserController-20:This username is already taken.

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import rapbattles.rap_battles.Util.ErrorMessage;
 import rapbattles.rap_battles.Util.Exceptions.InvalidUsernameOrEmailException;
 import rapbattles.rap_battles.Util.Exceptions.InvalidPasswordException;
+import rapbattles.rap_battles.Util.Exceptions.WrongActivationCodeException;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +15,7 @@ public abstract class BaseController {
 
     static Logger log = Logger.getLogger(UserController.class.getName());
 
-    @ExceptionHandler({InvalidUsernameOrEmailException.class, InvalidPasswordException.class})
+    @ExceptionHandler({InvalidUsernameOrEmailException.class, InvalidPasswordException.class, WrongActivationCodeException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage handleUserRegistration(Exception e) {
         log.error(e.getMessage());
