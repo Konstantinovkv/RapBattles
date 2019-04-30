@@ -13,8 +13,6 @@ import javax.servlet.http.HttpSession;
 @RequestMapping(value = "/user")
 public class UserController extends BaseController{
 
-    public static final String LOGGED = "logged";
-
 
     @Autowired
     UserServiceImplem usi;

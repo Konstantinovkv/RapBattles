@@ -2,6 +2,7 @@ package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.RequestBody;
 import rapbattles.rap_battles.Controller.BaseController;
 import rapbattles.rap_battles.Models.DAO.ActivationCodeDAOImplem;
 import rapbattles.rap_battles.Models.DAO.UserDAOImplem;
@@ -42,7 +43,7 @@ public class UserServiceImplem extends BaseController implements UserService {
 
     //Service for logging in.
     @Override
-    public UserDTO login(User user, HttpSession session) throws MainException {
+    public UserDTO login(@RequestBody User user, HttpSession session) throws MainException {
         checkIfAccountIsActivated(user);
         checkUsernameOrEmail(user);
         return checkPassword(user, session);
@@ -123,10 +124,7 @@ public class UserServiceImplem extends BaseController implements UserService {
 
     //Checks if the user exists.
     private void checkIfUserExists(User user) throws MainException {
-        if (dao.findUserByUsernameDTO(user.getUsername()) == null) {
-            throw new InvalidUsernameOrEmailException("This user does not exist.");
-        }
-        if (dao.findUserByEmailDTO(user.getEmail()) == null) {
+        if (dao.findUserByUsername(user.getUsername()) == null&&dao.findUserByEmail(user.getEmail()) == null) {
             throw new InvalidUsernameOrEmailException("This user does not exist.");
         }
     }
