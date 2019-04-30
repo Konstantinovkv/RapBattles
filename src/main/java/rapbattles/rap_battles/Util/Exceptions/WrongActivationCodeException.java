@@ -1,6 +1,6 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class WrongActivationCodeException extends Exception {
+public class WrongActivationCodeException extends MainException {
 
     private String message;
 

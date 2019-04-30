@@ -13,8 +13,7 @@ public abstract class BaseController {
 
     static Logger log = Logger.getLogger(UserController.class.getName());
 
-    @ExceptionHandler({InvalidUsernameOrEmailException.class, InvalidPasswordException.class, WrongActivationCodeException.class, WrongEmailOrPasswordException.class,
-            AccountNotActivatedException.class})
+    @ExceptionHandler({MainException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessage exceptionHandler(Exception e) {
         log.error(e.getMessage());

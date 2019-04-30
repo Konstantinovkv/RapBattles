@@ -1,6 +1,6 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class InvalidUsernameOrEmailException extends Exception {
+public class InvalidUsernameOrEmailException extends MainException {
 
         String message;
 

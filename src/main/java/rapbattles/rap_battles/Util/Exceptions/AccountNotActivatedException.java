@@ -1,6 +1,6 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class AccountNotActivatedException extends Exception {
+public class AccountNotActivatedException extends MainException {
 
     String message;
 

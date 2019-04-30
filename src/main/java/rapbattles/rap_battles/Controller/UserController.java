@@ -20,17 +20,17 @@ public class UserController extends BaseController{
     UserServiceImplem usi;
 
     @PostMapping("/register")
-    public UserDTO registerUser(@RequestBody User user, HttpSession session) throws InvalidUsernameOrEmailException, InvalidPasswordException {
+    public UserDTO registerUser(@RequestBody User user, HttpSession session) throws MainException {
         return usi.addUser(user, session);
     }
 
     @PostMapping(value = "/login")
-    public UserDTO loginUser(@RequestBody User user, HttpSession session) throws WrongEmailOrPasswordException, AccountNotActivatedException {
+    public UserDTO loginUser(@RequestBody User user, HttpSession session) throws MainException {
         return usi.login(user,session);
     }
 
     @GetMapping("/activate/{activation_code}")
-    public String activateAccount(@PathVariable(value = "activation_code") String activation_code) throws WrongActivationCodeException {
+    public String activateAccount(@PathVariable(value = "activation_code") String activation_code) throws MainException {
         usi.activateAccountService(activation_code);
         return "<h1>Your account has been activated.</h1>";
     }

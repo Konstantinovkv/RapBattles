@@ -31,7 +31,7 @@ public class UserServiceImplem extends BaseController implements UserService {
 
     //Pretty much register user as a whole and send email confirmation
     @Override
-    public UserDTO addUser(User user, HttpSession session) throws InvalidUsernameOrEmailException, InvalidPasswordException {
+    public UserDTO addUser(User user, HttpSession session) throws MainException {
         validateUsernameAndEmail(user);
         checkIfUsernameOrEmailExists(user);
         validateAndGenerateSecurePassword(user);
@@ -42,14 +42,14 @@ public class UserServiceImplem extends BaseController implements UserService {
 
     //Service for logging in.
     @Override
-    public UserDTO login(User user, HttpSession session) throws WrongEmailOrPasswordException, AccountNotActivatedException {
+    public UserDTO login(User user, HttpSession session) throws MainException {
         checkIfAccountIsActivated(user);
         checkUsernameOrEmail(user);
         return checkPassword(user, session);
     }
 
     //Checks if the correct password has been entered.
-    private UserDTO checkPassword(User user, HttpSession session) throws WrongEmailOrPasswordException {
+    private UserDTO checkPassword(User user, HttpSession session) throws MainException {
         boolean passwordMatch = false;
         if (dao.findUserByUsernameDTO(user.getUsername()) == null){
             passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), dao.findUserByEmail(user.getEmail()).getPassword(),
@@ -78,8 +78,7 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //Checks if the login info (username or email) are correct or existing.
-    private void checkUsernameOrEmail(User user) throws WrongEmailOrPasswordException {
-
+    private void checkUsernameOrEmail(User user) throws MainException {
         if (dao.findUserByEmailDTO(user.getEmail())==null){
             if(dao.findUserByUsernameDTO(user.getUsername()) == null){
                 throw new WrongEmailOrPasswordException("Wrong username, email or password.");
@@ -94,7 +93,8 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //Checks if he account has been verified by email.
-    private void checkIfAccountIsActivated(User user) throws AccountNotActivatedException {
+    private void checkIfAccountIsActivated(User user) throws MainException {
+        checkIfUserExists(user);
         if (dao.findUserByEmailDTO(user.getEmail())==null){
             if(!dao.findUserByUsernameDTO(user.getUsername()).isActivated()){
                 throw new AccountNotActivatedException("Your account is not activated.");
@@ -108,7 +108,7 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //Checks if the 2 passwords match and validates if password matches requirements.
-    private void validateAndGenerateSecurePassword(User user) throws InvalidPasswordException {
+    private void validateAndGenerateSecurePassword(User user) throws MainException {
         if(!user.getPassword().equals(user.getSecond_password())){
             throw new InvalidPasswordException("Passwords don't match. Please check your spelling.");
         }
@@ -121,8 +121,18 @@ public class UserServiceImplem extends BaseController implements UserService {
         }
     }
 
+    //Checks if the user exists.
+    private void checkIfUserExists(User user) throws MainException {
+        if (dao.findUserByUsernameDTO(user.getUsername()) == null) {
+            throw new InvalidUsernameOrEmailException("This user does not exist.");
+        }
+        if (dao.findUserByEmailDTO(user.getEmail()) == null) {
+            throw new InvalidUsernameOrEmailException("This user does not exist.");
+        }
+    }
+
     //Checks if the provided username and email are valid.
-    private void validateUsernameAndEmail(User user) throws InvalidUsernameOrEmailException{
+    private void validateUsernameAndEmail(User user) throws MainException{
         if(!validateEmail(user.getEmail())){
             throw new InvalidUsernameOrEmailException("This is not a valid email.");
         }
@@ -132,7 +142,7 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //Checks if username or email have already been used before to register an account.
-    private void checkIfUsernameOrEmailExists(User user) throws InvalidUsernameOrEmailException{
+    private void checkIfUsernameOrEmailExists(User user) throws MainException{
         if (dao.findUserByUsernameDTO(user.getUsername()) != null) {
             throw new InvalidUsernameOrEmailException("This username is already taken.");
         }
@@ -189,7 +199,7 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     //activates account.
-    public void activateAccountService(String activation_code) throws WrongActivationCodeException {
+    public void activateAccountService(String activation_code) throws MainException {
         if (activationDao.findUserIdByActivationCode(activation_code)==null){
             throw new WrongActivationCodeException("The activation code is wrong.");
         }

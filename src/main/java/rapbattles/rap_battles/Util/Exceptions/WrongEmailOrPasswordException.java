@@ -1,6 +1,6 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class WrongEmailOrPasswordException extends Exception {
+public class WrongEmailOrPasswordException extends MainException {
 
     String message;
 

@@ -1,6 +1,6 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class InvalidPasswordException extends Exception {
+public class InvalidPasswordException extends MainException {
 
     private String message;
 
