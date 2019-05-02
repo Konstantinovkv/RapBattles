@@ -11,4 +11,6 @@ public interface UserService {
     UserDTO addUser(User user, HttpSession session) throws MainException;
 
     UserDTO login(User user, HttpSession session) throws MainException;
+
+    int removeUser(HttpSession session) throws NotLoggedException;
 }

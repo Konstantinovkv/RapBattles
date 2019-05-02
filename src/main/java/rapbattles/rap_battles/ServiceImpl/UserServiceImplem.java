@@ -49,6 +49,15 @@ public class UserServiceImplem extends BaseController implements UserService {
         return checkPassword(user, session);
     }
 
+    @Override
+    public int removeUser(HttpSession session) throws NotLoggedException {
+        validateLogged(session);
+        UserDTO user = (UserDTO) session.getAttribute(LOGGED);
+        int id = user.getUser_ID();
+        dao.deleteUserByID(user.getUser_ID());
+        return id;
+    }
+
     //Checks if the correct password has been entered.
     private UserDTO checkPassword(User user, HttpSession session) throws MainException {
         boolean passwordMatch = false;

@@ -33,5 +33,10 @@ public class UserController extends BaseController{
         return "<h1>Your account has been activated.</h1>";
     }
 
+    @DeleteMapping("/deleteAccount")
+    public int deleteUser(HttpSession session) throws NotLoggedException {
+        return usi.removeUser(session);
+    }
+
 
 }

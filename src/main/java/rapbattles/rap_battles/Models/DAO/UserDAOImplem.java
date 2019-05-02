@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
@@ -82,7 +80,7 @@ public class UserDAOImplem implements UserDAO {
 
     @Override
     public void deleteUserByID(int user_ID) {
-
+        jdbc.update("DELETE FROM users WHERE user_ID=?", new Object[]{user_ID});
     }
 
     public void setActiveToTrue(UserDTO userDTO){
@@ -116,16 +114,5 @@ public class UserDAOImplem implements UserDAO {
 
             return userDTO;
         }
-    }
-
-    private SqlParameterSource getSqlParameterByModel(UserDTO userDTO){
-        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
-        if(userDTO != null){
-            parameterSource.addValue("user_ID", userDTO.getUser_ID());
-            parameterSource.addValue("email", userDTO.getEmail());
-            parameterSource.addValue("username", userDTO.getUsername());
-            parameterSource.addValue("activated", userDTO.isActivated());
-        }
-        return parameterSource;
     }
 }
