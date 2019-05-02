@@ -103,7 +103,6 @@ public class UserDAOImplem implements UserDAO {
             user.setActivated(rs.getBoolean("activated"));
             return user;
         }
-
     }
 
     private static final class UserDTOMapper implements RowMapper {

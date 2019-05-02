@@ -3,7 +3,12 @@ package rapbattles.rap_battles.Models.DAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import rapbattles.rap_battles.Models.POJO.Description;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Repository
 public class DescriptionDAOImplem implements DescriptionDAO {
@@ -21,14 +26,23 @@ public class DescriptionDAOImplem implements DescriptionDAO {
         jdbc.update(sql, new Object[]{user_ID,description});
     }
 
-    public boolean findDescriptionById(int user_ID){
+    public Description findDescriptionById(int user_ID){
         try{
-            String sql = "SELECT user_ID FROM descriptions WHERE user_ID = "+user_ID;
-            jdbc.execute(sql);
-            return true;
+            String sql = "SELECT user_ID, user_description FROM descriptions WHERE user_ID = ?";
+            return (Description) jdbc.queryForObject(sql, new Object[]{user_ID}, new DescriptionMapper());
         }
         catch (EmptyResultDataAccessException e){
-            return false;
+            return null;
+        }
+    }
+
+    private static final class DescriptionMapper implements RowMapper {
+
+        public Description mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Description description = new Description();
+            description.setUser_ID(rs.getInt("user_ID"));
+            description.setUser_description(rs.getString("user_description"));
+            return description;
         }
     }
 }

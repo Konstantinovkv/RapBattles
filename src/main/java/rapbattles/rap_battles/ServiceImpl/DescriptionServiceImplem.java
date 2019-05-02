@@ -14,7 +14,7 @@ public class DescriptionServiceImplem implements DescriptionService {
 
     @Override
     public void updateUserDescription(String description, UserDTO userDTO) {
-        if(ddao.findDescriptionById(userDTO.getUser_ID())==false){
+        if(ddao.findDescriptionById(userDTO.getUser_ID())==null){
             ddao.addDescription(description,userDTO.getUser_ID());
         }
         else {

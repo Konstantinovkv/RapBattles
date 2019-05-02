@@ -7,5 +7,5 @@ public interface DescriptionDAO {
 
     void addDescription(String description, int user_ID);
 
-    boolean findDescriptionById(int user_ID);
+    Description findDescriptionById(int user_ID);
 }
