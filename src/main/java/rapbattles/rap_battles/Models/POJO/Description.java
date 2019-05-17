@@ -13,5 +13,4 @@ public class Description {
 
     private int user_ID;
     private String user_description;
-
 }

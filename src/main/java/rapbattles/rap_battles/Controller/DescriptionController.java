@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Description;
 import rapbattles.rap_battles.ServiceImpl.DescriptionServiceImplem;
-import rapbattles.rap_battles.Util.Exceptions.MainException;
 import rapbattles.rap_battles.Util.Exceptions.NotLoggedException;
 
 import javax.servlet.http.HttpSession;
@@ -21,11 +20,10 @@ public class DescriptionController extends BaseController {
     DescriptionServiceImplem dsi;
 
     @PostMapping("/updateDescription")
-    public String updateUserDescription(@RequestBody Description description, HttpSession session) throws NotLoggedException {
+    public Description updateUserDescription(@RequestBody Description description, HttpSession session) throws NotLoggedException {
         validateLogged(session);
         UserDTO userDTO = (UserDTO) session.getAttribute(LOGGED);
-        dsi.updateUserDescription(description.getUser_description(),userDTO);
 
-        return "Description updated successfully.";
+        return dsi.updateUserDescription(description.getUser_description(),userDTO);
     }
 }

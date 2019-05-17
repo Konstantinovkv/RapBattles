@@ -1,7 +1,7 @@
 package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import rapbattles.rap_battles.Controller.BaseController;
 import rapbattles.rap_battles.Models.DAO.ActivationCodeDAOImplem;
@@ -18,7 +18,7 @@ import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Repository
+@Service
 public class UserServiceImplem extends BaseController implements UserService {
 
     @Autowired

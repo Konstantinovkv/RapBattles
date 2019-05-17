@@ -1,8 +1,9 @@
 package rapbattles.rap_battles.Service;
 
 import rapbattles.rap_battles.Models.DTO.UserDTO;
+import rapbattles.rap_battles.Models.POJO.Description;
 
 public interface DescriptionService {
 
-    void updateUserDescription(String description, UserDTO userDTO);
+    Description updateUserDescription(String description, UserDTO userDTO);
 }
