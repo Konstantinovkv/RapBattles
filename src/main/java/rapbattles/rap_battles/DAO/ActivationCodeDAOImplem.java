@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.Models.DAO;
+package rapbattles.rap_battles.DAO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

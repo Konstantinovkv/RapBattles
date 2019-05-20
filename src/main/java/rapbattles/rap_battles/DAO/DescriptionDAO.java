@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.Models.DAO;
+package rapbattles.rap_battles.DAO;
 import rapbattles.rap_battles.Models.POJO.Description;
 
 public interface DescriptionDAO {
