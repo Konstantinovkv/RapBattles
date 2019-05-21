@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
 
@@ -17,11 +18,4 @@ public class User {
     private String second_password;
     private String salt;
     private boolean activated;
-
-    public User(String username, String email, String password, String second_password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.second_password = second_password;
-    }
 }
