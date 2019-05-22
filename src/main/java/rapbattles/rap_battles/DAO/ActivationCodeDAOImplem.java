@@ -24,9 +24,19 @@ public class ActivationCodeDAOImplem implements ActivationCodeDAO{
 
     public UserActivationCode findUserIdByActivationCode(String activation_code){
         try {
-        String sql = "SELECT user_ID, activation_code  FROM user_activation_code WHERE activation_code= ?";
+        String sql = "SELECT user_ID, activation_code FROM user_activation_code WHERE activation_code = ?";
         UserActivationCode userActivationCode = jdbc.queryForObject(sql, new Object[]{activation_code}, (resultSet, i) -> mapRow(resultSet));
         return userActivationCode;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public String findActivationCodeByUserID(int user_ID){
+        try {
+            String sql = "SELECT user_ID, activation_code FROM user_activation_code WHERE user_ID = ?";
+            UserActivationCode userActivationCode = jdbc.queryForObject(sql, new Object[]{user_ID}, (resultSet, i) -> mapRow(resultSet));
+            return userActivationCode.getActivation_code();
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

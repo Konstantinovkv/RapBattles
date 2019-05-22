@@ -13,8 +13,4 @@ public class UserActivationCode {
 
     private int user_ID;
     private String activation_code;
-
-    public UserActivationCode(String activation_code) {
-        this.activation_code = activation_code;
-    }
 }

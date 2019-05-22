@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import rapbattles.rap_battles.DAO.ActivationCodeDAO;
 import rapbattles.rap_battles.DAO.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
@@ -23,12 +24,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.Scanner;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@DisplayName("Testing the UserController methods") //Order of the tests doesn't matter, I have it there so I can delete the account after the tests.
+@DisplayName("Testing the UserController methods") //Order of the tests matters because I need to create an account to test the rest and in the end delete the account.
 public class TestUserController {
 
     private MockMvc mockMvc;
@@ -38,6 +41,9 @@ public class TestUserController {
 
     @Autowired
     UserDAOImplem userDAO;
+
+    @Autowired
+    ActivationCodeDAO activationCodeDAO;
 
     @Mock
     private HttpSession session;
@@ -78,8 +84,17 @@ public class TestUserController {
                 () -> assertEquals(response.getEmail(),"testAccount@gmail.com"),
                 () -> assertEquals(response.isActivated(),false)
         );
-        UserDTO userDTO = new UserDTO(userID,"TestAccount","testAccount@gmail.com",false);
-        userDAO.setActiveToTrue(userDTO);
+    }
+
+    @Test
+    @Order(2)
+    @DisplayName("Testing activateAccount")
+    public void activateAccountTest() throws Exception {
+        String activationCode = activationCodeDAO.findActivationCodeByUserID(userID);
+        MvcResult result = mockMvc.perform(get("/user/activate/"+activationCode).content(activationCode)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        assertEquals(resultContent,"<h1>Your account has been activated.</h1>");
     }
 
     @Nested
@@ -87,7 +102,7 @@ public class TestUserController {
     @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
     class TestLoginUser{
         @Test
-        @Order(2)
+        @Order(3)
         @DisplayName("Logging in with right username")
         void testLoginUsername() throws Exception {
             user.setEmail(null);
@@ -105,7 +120,7 @@ public class TestUserController {
         }
 
         @Test
-        @Order(3)
+        @Order(4)
         @DisplayName("Logging in with wrong username") //should not return 200 or 500
         void testLoginWrongUsername() throws Exception {
             String jsonRequest = om.writeValueAsString(user);
@@ -116,7 +131,7 @@ public class TestUserController {
         }
 
         @Test
-        @Order(4)
+        @Order(5)
         @DisplayName("Logging in with empty username") //should not return 200 or 500
         void testLoginEmptyUsername() throws Exception {
             String jsonRequest = om.writeValueAsString(user);
@@ -127,7 +142,7 @@ public class TestUserController {
         }
 
         @Test
-        @Order(5)
+        @Order(6)
         @DisplayName("Logging in with right email")
         void testLoginEmail() throws Exception {
             user.setUsername(null);
@@ -145,7 +160,7 @@ public class TestUserController {
         }
 
         @Test
-        @Order(6)
+        @Order(7)
         @DisplayName("Logging in with wrong email") //should not return 200 or 500
         void testLoginWrongEmail() throws Exception {
             String jsonRequest = om.writeValueAsString(user);
@@ -156,7 +171,7 @@ public class TestUserController {
         }
 
         @Test
-        @Order(7)
+        @Order(8)
         @DisplayName("Logging in with empty email") //should not return 200 or 500
         void testLoginEmptyEmail() throws Exception {
             String jsonRequest = om.writeValueAsString(user);
@@ -167,8 +182,8 @@ public class TestUserController {
         }
 
         @Test
-        @Order(8) //>>>Also deletes the account<<<
-        @DisplayName("Logging in with wrong password") //should not return 200 or 500
+        @Order(9) //>>>Also deletes the account<<<
+        @DisplayName("Logging in with wrong password and delete account") //should not return 200 or 500
         void testLoginWrongPassword() throws Exception {
             String jsonRequest = om.writeValueAsString(user);
             MvcResult result = mockMvc.perform(post("/user/login").content(jsonRequest)
