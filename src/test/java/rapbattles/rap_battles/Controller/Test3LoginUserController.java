@@ -16,7 +16,6 @@ import rapbattles.rap_battles.DAO.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.Util.PasswordUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
