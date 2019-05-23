@@ -5,7 +5,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import rapbattles.rap_battles.Models.ChatMessage;
+import rapbattles.rap_battles.Models.POJO.ChatMessage;
 
 @Controller
 public class ChatController {

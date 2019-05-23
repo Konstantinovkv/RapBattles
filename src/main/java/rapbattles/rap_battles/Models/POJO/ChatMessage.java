@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.Models;
+package rapbattles.rap_battles.Models.POJO;
 
 import lombok.Getter;
 import lombok.Setter;

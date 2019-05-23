@@ -23,7 +23,7 @@ public class EmailSender implements Runnable{
         this.activation_code = activation_code;
     }
 
-    public String sendEmail(String email, String name, String activation_code) throws MessagingException {
+    public void sendEmail(String email, String name, String activation_code) throws MessagingException {
 
         final String username = "FinalProjectITTnoReply@gmail.com";
         final String password = "A12345678@a";
@@ -51,7 +51,6 @@ public class EmailSender implements Runnable{
         MimeBodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setContent("", "text/html");
         Transport.send(msg);
-        return "Mail sent successfully.";
     }
 
     @Override

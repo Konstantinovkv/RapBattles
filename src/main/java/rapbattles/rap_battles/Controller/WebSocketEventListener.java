@@ -8,7 +8,7 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.messaging.SessionConnectedEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
-import rapbattles.rap_battles.Models.ChatMessage;
+import rapbattles.rap_battles.Models.POJO.ChatMessage;
 
 @Component
 public class WebSocketEventListener {
