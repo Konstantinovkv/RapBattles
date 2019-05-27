@@ -6,7 +6,6 @@ import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.*;
-
 import javax.servlet.http.HttpSession;
 
 @RestController

@@ -4,5 +4,7 @@ import rapbattles.rap_battles.Models.POJO.UserAvatar;
 
 public interface UserAvatarDAO {
 
-    public void uploadImage(UserAvatar userAvatar);
+    void uploadImage(UserAvatar userAvatar);
+
+    public String findImageById(int user_ID);
 }
