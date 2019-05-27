@@ -19,7 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class UserServiceImplem extends BaseController implements UserService {
+public class UserServiceImplem implements UserService {
 
     @Autowired
     UserDAOImplem dao;
@@ -50,8 +50,7 @@ public class UserServiceImplem extends BaseController implements UserService {
     }
 
     @Override
-    public int removeUser(HttpSession session) throws NotLoggedException {
-        validateLogged(session);
+    public int removeUser(HttpSession session) {
         UserDTO user = (UserDTO) session.getAttribute(LOGGED);
         int id = user.getUser_ID();
         dao.deleteUserByID(user.getUser_ID());

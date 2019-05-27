@@ -8,6 +8,7 @@ import rapbattles.rap_battles.Util.ErrorMessage;
 import rapbattles.rap_battles.Util.Exceptions.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import static rapbattles.rap_battles.ServiceImpl.UserServiceImplem.LOGGED;
@@ -28,6 +29,13 @@ public abstract class BaseController {
     public ErrorMessage exceptionHandlerForbidden(Exception e) {
         log.error(e.getMessage());
         return new ErrorMessage(e.getMessage(), HttpStatus.FORBIDDEN.value(), LocalDateTime.now());
+    }
+
+    @ExceptionHandler({IOException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public ErrorMessage exceptionHandlerIOE(Exception e) {
+        log.error(e.getMessage());
+        return new ErrorMessage(e.getMessage(), HttpStatus.NOT_FOUND.value(), LocalDateTime.now());
     }
 
     protected void validateLogged(HttpSession session) throws NotLoggedException {

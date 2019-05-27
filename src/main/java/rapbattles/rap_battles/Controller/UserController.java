@@ -19,6 +19,7 @@ public class UserController extends BaseController{
 
     @PostMapping("/register")
     public UserDTO registerUser(@RequestBody User user, HttpSession session) throws MainException {
+
         return usi.addUser(user, session);
     }
 
@@ -35,6 +36,7 @@ public class UserController extends BaseController{
 
     @DeleteMapping("/deleteAccount")
     public int deleteUser(HttpSession session) throws NotLoggedException {
+        validateLogged(session);
         return usi.removeUser(session);
     }
 

@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.Controller;
+package rapbattles.rap_battles.Controller.TestUserController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;

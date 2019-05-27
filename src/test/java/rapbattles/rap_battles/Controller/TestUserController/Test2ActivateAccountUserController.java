@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.Controller;
+package rapbattles.rap_battles.Controller.TestUserController;
 
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
