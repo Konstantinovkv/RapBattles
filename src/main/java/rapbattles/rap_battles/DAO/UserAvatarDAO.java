@@ -6,5 +6,5 @@ public interface UserAvatarDAO {
 
     void uploadImage(UserAvatar userAvatar);
 
-    public String findImageById(int user_ID);
+    String findImageById(int user_ID);
 }

@@ -26,7 +26,7 @@ public class AvatarController extends BaseController {
         return "Avatar uploaded successfully.";
     }
 
-    @GetMapping(value = "/avatar/{name}", produces = "image/png")
+    @GetMapping(value = "/avatars/{name}", produces = "image/png")
     public byte[] downloadAvatar(@PathVariable("name") String imageName)throws IOException{
         return uasImplem.downloadImage(imageName);
     }

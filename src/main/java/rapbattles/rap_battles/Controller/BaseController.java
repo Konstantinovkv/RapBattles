@@ -31,7 +31,7 @@ public abstract class BaseController {
         return new ErrorMessage(e.getMessage(), HttpStatus.FORBIDDEN.value(), LocalDateTime.now());
     }
 
-    @ExceptionHandler({IOException.class})
+    @ExceptionHandler({IOException.class,NotFoundException.class})
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     public ErrorMessage exceptionHandlerIOE(Exception e) {
         log.error(e.getMessage());

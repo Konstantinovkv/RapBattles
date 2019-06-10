@@ -89,7 +89,6 @@ public class UserDAOImplem implements UserDAO {
     }
 
     private static final class UserMapper implements RowMapper {
-
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();
             user.setUser_ID(rs.getInt("user_ID"));
@@ -104,7 +103,6 @@ public class UserDAOImplem implements UserDAO {
     }
 
     private static final class UserDTOMapper implements RowMapper {
-
         public UserDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
             UserDTO userDTO = new UserDTO();
             userDTO.setUser_ID(rs.getInt("user_ID"));

@@ -6,7 +6,5 @@ import lombok.NoArgsConstructor;
 public class Text {
 
     private int text_ID;
-    private String title;
     private String content;
-    private int user_ID;
 }

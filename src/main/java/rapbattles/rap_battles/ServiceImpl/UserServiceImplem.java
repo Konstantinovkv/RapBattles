@@ -3,7 +3,6 @@ package rapbattles.rap_battles.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import rapbattles.rap_battles.Controller.BaseController;
 import rapbattles.rap_battles.DAO.ActivationCodeDAOImplem;
 import rapbattles.rap_battles.DAO.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;

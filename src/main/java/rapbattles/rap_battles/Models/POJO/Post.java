@@ -1,8 +1,10 @@
 package rapbattles.rap_battles.Models.POJO;
 
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
+@Setter
 public class Post {
 
     private int post_ID;
