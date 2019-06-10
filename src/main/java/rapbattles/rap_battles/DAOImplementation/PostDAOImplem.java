@@ -38,7 +38,7 @@ public class PostDAOImplem implements PostDAO {
                     "JOIN users\n" +
                     "ON(users.user_ID = posts.user_ID)\n" +
                     "JOIN texts\n" +
-                    "ON (texts.texts_ID = posts.text_ID)\n" +
+                    "ON (texts.text_ID = posts.text_ID)\n" +
                     "JOIN post_pictures\n" +
                     "ON(post_pictures.picture_ID = posts.picture_ID)\n" +
                     "WHERE post_ID = ?";
@@ -54,7 +54,7 @@ public class PostDAOImplem implements PostDAO {
                 "JOIN users\n" +
                 "ON(users.user_ID = posts.user_ID)\n" +
                 "JOIN texts\n" +
-                "ON (texts.texts_ID = posts.text_ID)\n" +
+                "ON (texts.text_ID = posts.text_ID)\n" +
                 "JOIN post_pictures\n" +
                 "ON(post_pictures.picture_ID = posts.picture_ID)\n" +
                 "WHERE users.user_ID = ?";
@@ -80,7 +80,6 @@ public class PostDAOImplem implements PostDAO {
             postDTO.setContent(rs.getString("content"));
             postDTO.setPicPath(rs.getString("path"));
             postDTO.setDate_time_created(rs.getTimestamp("date_time_created"));
-            postDTO.setFileStr(rs.getString("fileStr"));
             return postDTO;
         }
     }
@@ -88,8 +87,7 @@ public class PostDAOImplem implements PostDAO {
     private PostDTO mapRowPostDTO(ResultSet rs) throws SQLException {
         return new PostDTO(rs.getInt("post_ID"), rs.getString("username"),
                 rs.getString("title"), rs.getString("content"),
-                rs.getString("path"),rs.getTimestamp("date_time_created"),
-                rs.getString("fileStr"));
+                rs.getString("path"),rs.getTimestamp("date_time_created"));
     }
 
 //    private static final class PostMapper implements RowMapper {

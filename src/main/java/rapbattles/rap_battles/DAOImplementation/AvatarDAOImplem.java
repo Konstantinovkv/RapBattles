@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
-public class UserAvatarDAOImplem implements UserAvatarDAO {
+public class AvatarDAOImplem implements UserAvatarDAO {
 
     @Autowired
     private JdbcTemplate jdbc;

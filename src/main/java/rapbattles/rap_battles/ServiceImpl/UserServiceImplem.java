@@ -2,8 +2,8 @@ package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import rapbattles.rap_battles.DAOImplementation.ActivationCodeDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.AvatarDAOImplem;
 import rapbattles.rap_battles.DAOImplementation.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
@@ -12,6 +12,7 @@ import rapbattles.rap_battles.Util.EmailSender;
 import rapbattles.rap_battles.Util.Exceptions.*;
 import rapbattles.rap_battles.Util.PasswordUtils;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +25,12 @@ public class UserServiceImplem implements UserService {
 
     @Autowired
     ActivationCodeDAOImplem activationDao;
+
+    @Autowired
+    AvatarDAOImplem avatarDAO;
+
+    @Autowired
+    AvatarServiceImplem aSI;
 
 
     public static final String LOGGED = "logged";  // a constant for the session
@@ -41,7 +48,7 @@ public class UserServiceImplem implements UserService {
 
     //Service for logging in.
     @Override
-    public UserDTO login(@RequestBody User user, HttpSession session) throws MainException {
+    public UserDTO login(User user, HttpSession session) throws MainException {
         checkIfAccountIsActivated(user);
         checkUsernameOrEmail(user);
         return checkPassword(user, session);
@@ -53,6 +60,15 @@ public class UserServiceImplem implements UserService {
         int id = user.getUser_ID();
         dao.deleteUserByID(user.getUser_ID());
         return id;
+    }
+
+    public byte[] viewUserAvatarByID(int user_ID) throws NotFoundException, IOException {
+        if (avatarDAO.findImageById(user_ID)==null){
+            throw new NotFoundException("This user doesn't have an avatar.");
+        }
+        else {
+            return aSI.downloadImage(avatarDAO.findImageById(user_ID));
+        }
     }
 
     //Checks if the correct password has been entered.

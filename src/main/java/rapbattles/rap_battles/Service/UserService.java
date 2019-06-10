@@ -5,6 +5,7 @@ import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.Util.Exceptions.*;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public interface UserService {
 
@@ -13,4 +14,6 @@ public interface UserService {
     UserDTO login(User user, HttpSession session) throws MainException;
 
     int removeUser(HttpSession session) throws NotLoggedException;
+
+    byte[] viewUserAvatarByID(int user_ID) throws NotFoundException, IOException;
 }

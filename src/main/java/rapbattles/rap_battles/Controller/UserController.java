@@ -7,6 +7,7 @@ import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.ServiceImpl.UserServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.*;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -37,6 +38,11 @@ public class UserController extends BaseController{
     public int deleteUser(HttpSession session) throws NotLoggedException {
         validateLogged(session);
         return usi.removeUser(session);
+    }
+
+    @GetMapping(value = "user_avatar/{user_ID}", produces = "image/png")
+    public byte[] viewAvatar(@PathVariable("user_ID") int user_ID) throws IOException, NotFoundException {
+        return usi.viewUserAvatarByID(user_ID);
     }
 
 

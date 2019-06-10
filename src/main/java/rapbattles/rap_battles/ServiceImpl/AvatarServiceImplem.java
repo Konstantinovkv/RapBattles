@@ -2,7 +2,7 @@ package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rapbattles.rap_battles.DAOImplementation.UserAvatarDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.AvatarDAOImplem;
 import rapbattles.rap_battles.Models.DTO.ImageUploadDTO;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.UserAvatar;
@@ -16,12 +16,12 @@ import java.io.IOException;
 import java.util.Base64;
 
 @Service
-public class UserAvatarServiceImplem implements UserAvatarService {
+public class AvatarServiceImplem implements UserAvatarService {
 
     public static final String IMAGE_URL = "C:\\Users\\Konstantin\\Desktop\\ProjectImages\\Avatars\\";
 
     @Autowired
-    UserAvatarDAOImplem uaDAO;
+    AvatarDAOImplem uaDAO;
 
     public void uploadAvatarImage(ImageUploadDTO dto, UserDTO user) throws IOException, MainException {
         String base64 = dto.getFileStr();

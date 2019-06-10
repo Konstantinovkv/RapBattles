@@ -8,6 +8,7 @@ import rapbattles.rap_battles.Service.PostPictureService;
 import rapbattles.rap_battles.Util.Exceptions.InvalidURLException;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Base64;
@@ -34,5 +35,11 @@ public class PostPictureServiceImplem implements PostPictureService {
         fos.write(bytes);
         PostPicture postPicture = new PostPicture(name);
         return ppDAO.uploadPostPicture(name);
+    }
+
+    public byte[] downloadImage(String imageName)throws IOException{
+        File newImage = new File(IMAGE_URL +imageName+".png");
+        FileInputStream fis = new FileInputStream(newImage);
+        return fis.readAllBytes();
     }
 }
