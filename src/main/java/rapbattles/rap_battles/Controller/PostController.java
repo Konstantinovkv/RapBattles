@@ -2,13 +2,13 @@ package rapbattles.rap_battles.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import rapbattles.rap_battles.DAO.PostDAOImplem;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.ServiceImpl.PostServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
-
+import rapbattles.rap_battles.Util.Exceptions.NotLoggedException;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -17,9 +17,6 @@ public class PostController extends BaseController {
 
     @Autowired
     PostServiceImplem psi;
-
-    @Autowired
-    PostDAOImplem pDAO;
 
     public static final String LOGGED = "logged";
 
@@ -34,8 +31,9 @@ public class PostController extends BaseController {
     }
 
     @PostMapping("/create_post")
-    public void createPost(@RequestBody PostDTO postDTO, HttpSession session){
+    public void createPost(@RequestBody PostDTO postDTO, HttpSession session) throws IOException, MainException, NotLoggedException {
+        validateLogged(session);
         UserDTO userDTO = (UserDTO) session.getAttribute(LOGGED);
-        pDAO.createPost(postDTO, userDTO.getUser_ID());
+        psi.createPost(postDTO,userDTO);
     }
 }

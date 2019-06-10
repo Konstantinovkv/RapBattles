@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import rapbattles.rap_battles.DAO.ActivationCodeDAO;
-import rapbattles.rap_battles.DAO.UserDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.UserDAOImplem;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;

@@ -1,16 +1,17 @@
-package rapbattles.rap_battles.DAO;
+package rapbattles.rap_battles.DAOImplementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import rapbattles.rap_battles.DAO.ActivationCodeDAO;
 import rapbattles.rap_battles.Models.POJO.UserActivationCode;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Repository
-public class ActivationCodeDAOImplem implements ActivationCodeDAO{
+public class ActivationCodeDAOImplem implements ActivationCodeDAO {
 
     @Autowired
     private JdbcTemplate jdbc;

@@ -3,15 +3,14 @@ package rapbattles.rap_battles.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import rapbattles.rap_battles.DAO.ActivationCodeDAOImplem;
-import rapbattles.rap_battles.DAO.UserDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.ActivationCodeDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.Service.UserService;
 import rapbattles.rap_battles.Util.EmailSender;
 import rapbattles.rap_battles.Util.Exceptions.*;
 import rapbattles.rap_battles.Util.PasswordUtils;
-
 import javax.servlet.http.HttpSession;
 import java.util.Random;
 import java.util.regex.Matcher;

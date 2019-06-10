@@ -2,7 +2,7 @@ package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rapbattles.rap_battles.DAO.DescriptionDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.DescriptionDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Description;
 import rapbattles.rap_battles.Service.DescriptionService;

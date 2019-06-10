@@ -1,11 +1,18 @@
-package rapbattles.rap_battles.DAO;
+package rapbattles.rap_battles.DAOImplementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import rapbattles.rap_battles.Controller.BaseController;
+import rapbattles.rap_battles.DAO.PostDAO;
+import rapbattles.rap_battles.Models.DTO.ImageUploadDTO;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.ServiceImpl.PostPictureServiceImplem;
+import rapbattles.rap_battles.Util.Exceptions.MainException;
+
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -17,6 +24,12 @@ public class PostDAOImplem implements PostDAO {
 
     @Autowired
     private JdbcTemplate jdbc;
+
+    @Autowired
+    TextDAOImplem textDAO;
+
+    @Autowired
+    PostPictureServiceImplem ppsi;
 
     public PostDTO getPostByID(int post_ID) {
         try {
@@ -49,11 +62,13 @@ public class PostDAOImplem implements PostDAO {
         return posts;
     }
 
-    public void createPost(PostDTO postDTO, int user_ID){
+    public void createPost(PostDTO postDTO, int user_ID) throws IOException, MainException {
         java.util.Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        String sql = "INSERT INTO posts (user_ID, title,date_time_created) VALUES (?,?,?)";
-        jdbc.update(sql, new Object[]{user_ID,postDTO.getTitle(), timestamp});
+        int text_ID = textDAO.writeText(postDTO.getContent());
+        int picture_ID = ppsi.uploadPostImage(postDTO.getFileStr());
+        String sql = "INSERT INTO posts (user_ID, title,date_time_created, text_ID, picture_ID) VALUES (?,?,?,?,?)";
+        jdbc.update(sql, new Object[]{user_ID,postDTO.getTitle(), timestamp, text_ID,picture_ID});
     }
 
     private static final class PostDTOMapper implements RowMapper {
@@ -65,6 +80,7 @@ public class PostDAOImplem implements PostDAO {
             postDTO.setContent(rs.getString("content"));
             postDTO.setPicPath(rs.getString("path"));
             postDTO.setDate_time_created(rs.getTimestamp("date_time_created"));
+            postDTO.setFileStr(rs.getString("fileStr"));
             return postDTO;
         }
     }
@@ -72,7 +88,8 @@ public class PostDAOImplem implements PostDAO {
     private PostDTO mapRowPostDTO(ResultSet rs) throws SQLException {
         return new PostDTO(rs.getInt("post_ID"), rs.getString("username"),
                 rs.getString("title"), rs.getString("content"),
-                rs.getString("path"),rs.getTimestamp("date_time_created"));
+                rs.getString("path"),rs.getTimestamp("date_time_created"),
+                rs.getString("fileStr"));
     }
 
 //    private static final class PostMapper implements RowMapper {

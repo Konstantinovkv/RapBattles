@@ -12,7 +12,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import rapbattles.rap_battles.DAO.ActivationCodeDAO;
-import rapbattles.rap_battles.DAO.UserDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.UserDAOImplem;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.User;
 import rapbattles.rap_battles.Util.PasswordUtils;

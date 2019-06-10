@@ -1,4 +1,4 @@
-package rapbattles.rap_battles.DAO;
+package rapbattles.rap_battles.DAOImplementation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import rapbattles.rap_battles.DAO.UserAvatarDAO;
 import rapbattles.rap_battles.Models.POJO.UserAvatar;
 import java.sql.ResultSet;
 import java.sql.SQLException;

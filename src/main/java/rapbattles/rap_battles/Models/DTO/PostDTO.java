@@ -17,4 +17,5 @@ public class PostDTO {
     private String content;
     private String picPath;
     private java.util.Date date_time_created;
+    private String fileStr;
 }

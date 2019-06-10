@@ -2,11 +2,12 @@ package rapbattles.rap_battles.ServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rapbattles.rap_battles.DAO.PostDAOImplem;
+import rapbattles.rap_battles.DAOImplementation.PostDAOImplem;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
 import rapbattles.rap_battles.Util.Exceptions.NotFoundException;
-
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -27,7 +28,7 @@ public class PostServiceImplem {
         return postDAO.getAllPostsByUserID(user_ID);
     }
 
-    public void createPost(){
-
+    public void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException {
+        postDAO.createPost(postDTO, userDTO.getUser_ID());
     }
 }
