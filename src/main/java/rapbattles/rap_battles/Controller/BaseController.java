@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import rapbattles.rap_battles.Util.ErrorMessage;
 import rapbattles.rap_battles.Util.Exceptions.*;
-
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;

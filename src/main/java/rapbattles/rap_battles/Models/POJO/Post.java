@@ -16,5 +16,5 @@ public class Post {
     private String title;
     private int text_ID;
     private int picture_ID;
-    private java.sql.Date date_time_created;
+    private java.util.Date date_time_created;
 }

@@ -46,7 +46,7 @@ public class PostDAOImplem implements PostDAO {
         }
     }
 
-    public Post getPostByID(int post_ID){
+    public Post getPostByID(int post_ID) {
         try {
             String sql = "SELECT post_ID, user_ID, title, text_ID, picture_ID, date_time_created FROM posts WHERE post_ID = ?";
             return (Post) jdbc.queryForObject(sql, new Object[]{post_ID}, new PostMapper());
@@ -55,7 +55,7 @@ public class PostDAOImplem implements PostDAO {
         }
     }
 
-    public List<PostDTO> getAllPostsByUserID(int user_ID){
+    public List<PostDTO> getAllPostsByUserID(int user_ID) {
         String sql = "SELECT post_ID, username, title, content, `path`, date_time_created\n" +
                 "FROM posts\n" +
                 "JOIN users\n" +
@@ -65,8 +65,7 @@ public class PostDAOImplem implements PostDAO {
                 "JOIN post_pictures\n" +
                 "ON(post_pictures.picture_ID = posts.picture_ID)\n" +
                 "WHERE users.user_ID = ?";
-        List<PostDTO> posts = jdbc.query(sql, new Object[]{user_ID},(resultSet, i) -> mapRowPostDTO(resultSet));
-        return posts;
+        return jdbc.query(sql, new Object[]{user_ID}, (resultSet, i) -> mapRowPostDTO(resultSet));
     }
 
     public void createPost(PostDTO postDTO, int user_ID) throws IOException, MainException {
@@ -75,10 +74,10 @@ public class PostDAOImplem implements PostDAO {
         int text_ID = textDAO.writeText(postDTO.getContent());
         int picture_ID = ppsi.uploadPostImage(postDTO.getFileStr());
         String sql = "INSERT INTO posts (user_ID, title,date_time_created, text_ID, picture_ID) VALUES (?,?,?,?,?)";
-        jdbc.update(sql, new Object[]{user_ID,postDTO.getTitle(), timestamp, text_ID,picture_ID});
+        jdbc.update(sql, new Object[]{user_ID, postDTO.getTitle(), timestamp, text_ID, picture_ID});
     }
 
-    public void deletePost(int post_ID){
+    public void deletePost(int post_ID) {
         String sql = "DELETE FROM posts WHERE post_ID=?";
         jdbc.update(sql, new Object[]{post_ID});
     }
@@ -99,7 +98,7 @@ public class PostDAOImplem implements PostDAO {
     private PostDTO mapRowPostDTO(ResultSet rs) throws SQLException {
         return new PostDTO(rs.getInt("post_ID"), rs.getString("username"),
                 rs.getString("title"), rs.getString("content"),
-                rs.getString("path"),rs.getTimestamp("date_time_created"));
+                rs.getString("path"), rs.getTimestamp("date_time_created"));
     }
 
     private static final class PostMapper implements RowMapper {

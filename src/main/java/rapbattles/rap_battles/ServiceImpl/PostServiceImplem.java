@@ -37,7 +37,10 @@ public class PostServiceImplem {
         return postDTO;
     }
 
-    public List<PostDTO> getAllPostsByUserID(int user_ID){
+    public List<PostDTO> getAllPostsByUserID(int user_ID) throws MainException {
+        if (postDAO.getAllPostsByUserID(user_ID)==null){
+            throw new NotFoundException("No posts by this user.");
+        }
         return postDAO.getAllPostsByUserID(user_ID);
     }
 

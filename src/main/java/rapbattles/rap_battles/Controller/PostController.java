@@ -27,7 +27,7 @@ public class PostController extends BaseController {
     }
 
     @GetMapping("/user_id/{user_ID}")
-    public List<PostDTO> getAllPostsByUserID(@PathVariable(value = "user_ID") int user_ID){
+    public List<PostDTO> getAllPostsByUserID(@PathVariable(value = "user_ID") int user_ID) throws MainException {
         return psi.getAllPostsByUserID(user_ID);
     }
 

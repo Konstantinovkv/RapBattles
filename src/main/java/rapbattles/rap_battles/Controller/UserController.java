@@ -13,7 +13,6 @@ import java.io.IOException;
 @RequestMapping(value = "/user")
 public class UserController extends BaseController{
 
-
     @Autowired
     UserServiceImplem usi;
 
