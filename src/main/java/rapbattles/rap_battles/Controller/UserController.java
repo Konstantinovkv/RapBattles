@@ -35,7 +35,7 @@ public class UserController extends BaseController{
     }
 
     @DeleteMapping("/deleteAccount")
-    public int deleteUser(HttpSession session) throws NotLoggedException {
+    public int deleteUser(HttpSession session) throws ForbiddenException {
         validateLogged(session);
         return usi.removeUser(session);
     }

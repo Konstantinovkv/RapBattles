@@ -1,10 +1,10 @@
 package rapbattles.rap_battles.Util.Exceptions;
 
-public class NotLoggedException extends ForbiddenException {
+public class NotAuthorisedException extends ForbiddenException {
 
     private String message;
 
-    public NotLoggedException(String message) {
+    public NotAuthorisedException(String message) {
         this.message = message;
     }
 

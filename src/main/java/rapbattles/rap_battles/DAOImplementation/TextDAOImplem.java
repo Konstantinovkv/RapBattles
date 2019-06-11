@@ -26,4 +26,14 @@ public class TextDAOImplem implements TextDAO {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
+    public void updateText(String content, int text_ID){
+        String sql = "UPDATE texts SET content = ? WHERE text_ID = ?";
+        jdbc.update(sql, new Object[]{content, text_ID});
+    }
+
+    public void deleteText(int text_ID){
+        String sql = "DELETE FROM texts WHERE text_ID=?";
+        jdbc.update(sql, new Object[]{text_ID});
+    }
 }

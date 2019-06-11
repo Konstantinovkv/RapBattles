@@ -1,10 +1,14 @@
 package rapbattles.rap_battles.Models.POJO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
 @Setter
+@Getter
+@AllArgsConstructor
 public class Post {
 
     private int post_ID;

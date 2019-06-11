@@ -24,7 +24,7 @@ public abstract class BaseController {
         return new ErrorMessage(e.getMessage(), HttpStatus.BAD_REQUEST.value(), LocalDateTime.now());
     }
 
-    @ExceptionHandler({NotLoggedException.class})
+    @ExceptionHandler({ForbiddenException.class})
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     public ErrorMessage exceptionHandlerForbidden(Exception e) {
         log.error(e.getMessage());

@@ -26,4 +26,9 @@ public class PostPictureDAOImplementation implements PostPictureDAO {
         }, keyHolder);
         return keyHolder.getKey().intValue();
     }
+
+    public void deletePostPicture(int picture_ID){
+        String sql = "DELETE FROM post_pictures WHERE picture_ID=?";
+        jdbc.update(sql, new Object[]{picture_ID});
+    }
 }

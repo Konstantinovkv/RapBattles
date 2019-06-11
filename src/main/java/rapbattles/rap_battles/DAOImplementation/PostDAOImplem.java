@@ -5,13 +5,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import rapbattles.rap_battles.Controller.BaseController;
 import rapbattles.rap_battles.DAO.PostDAO;
-import rapbattles.rap_battles.Models.DTO.ImageUploadDTO;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.Models.POJO.Post;
 import rapbattles.rap_battles.ServiceImpl.PostPictureServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
-
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +29,7 @@ public class PostDAOImplem implements PostDAO {
     @Autowired
     PostPictureServiceImplem ppsi;
 
-    public PostDTO getPostByID(int post_ID) {
+    public PostDTO getPostDTOByID(int post_ID) {
         try {
             String sql = "SELECT post_ID, username, title, content, `path`, date_time_created\n" +
                     "FROM posts\n" +
@@ -43,6 +41,15 @@ public class PostDAOImplem implements PostDAO {
                     "ON(post_pictures.picture_ID = posts.picture_ID)\n" +
                     "WHERE post_ID = ?";
             return (PostDTO) jdbc.queryForObject(sql, new Object[]{post_ID}, new PostDTOMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public Post getPostByID(int post_ID){
+        try {
+            String sql = "SELECT post_ID, user_ID, title, text_ID, picture_ID, date_time_created FROM posts WHERE post_ID = ?";
+            return (Post) jdbc.queryForObject(sql, new Object[]{post_ID}, new PostMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -71,6 +78,11 @@ public class PostDAOImplem implements PostDAO {
         jdbc.update(sql, new Object[]{user_ID,postDTO.getTitle(), timestamp, text_ID,picture_ID});
     }
 
+    public void deletePost(int post_ID){
+        String sql = "DELETE FROM posts WHERE post_ID=?";
+        jdbc.update(sql, new Object[]{post_ID});
+    }
+
     private static final class PostDTOMapper implements RowMapper {
         public PostDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
             PostDTO postDTO = new PostDTO();
@@ -90,16 +102,16 @@ public class PostDAOImplem implements PostDAO {
                 rs.getString("path"),rs.getTimestamp("date_time_created"));
     }
 
-//    private static final class PostMapper implements RowMapper {
-//        public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
-//            Post post = new Post();
-//            post.setPost_ID(rs.getInt("post_ID"));
-//            post.setUser_ID(rs.getInt("user_ID"));
-//            post.setTitle(rs.getString("title"));
-//            post.setText_ID(rs.getInt("text_ID"));
-//            post.setPicture_ID(rs.getInt("picture_ID"));
-//            post.setDate_time_created(rs.getDate("date_time_created"));
-//            return post;
-//        }
-//    }
+    private static final class PostMapper implements RowMapper {
+        public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Post post = new Post();
+            post.setPost_ID(rs.getInt("post_ID"));
+            post.setUser_ID(rs.getInt("user_ID"));
+            post.setTitle(rs.getString("title"));
+            post.setText_ID(rs.getInt("text_ID"));
+            post.setPicture_ID(rs.getInt("picture_ID"));
+            post.setDate_time_created(rs.getDate("date_time_created"));
+            return post;
+        }
+    }
 }

@@ -110,7 +110,6 @@ public class UserDAOImplem implements UserDAO {
             userDTO.setEmail(rs.getString("email"));
             userDTO.setUsername(rs.getString("username"));
             userDTO.setActivated(rs.getBoolean("activated"));
-
             return userDTO;
         }
     }
