@@ -36,11 +36,12 @@ public class PostServiceImplem implements PostService {
         return postDTO;
     }
 
-    public List<PostDTO> getAllPostsByUserID(int user_ID) throws MainException{
-        if (postDAO.getAllPostsByUserID(user_ID)==null){
-            throw new NotFoundException("No posts by this user.");
-        }
+    public List<PostDTO> getAllPostsByUserID(int user_ID){
         return postDAO.getAllPostsByUserID(user_ID);
+    }
+
+    public List<PostDTO> getAllPostsLikedBy(int user_ID){
+        return postDAO.getAllPostsLikedBy(user_ID);
     }
 
     public void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException{

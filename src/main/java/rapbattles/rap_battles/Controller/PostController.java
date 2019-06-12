@@ -7,7 +7,6 @@ import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Text;
 import rapbattles.rap_battles.ServiceImpl.PostServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.*;
-
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -25,8 +24,13 @@ public class PostController extends BaseController {
     }
 
     @GetMapping("/user_id/{user_ID}")
-    public List<PostDTO> getAllPostsByUserID(@PathVariable(value = "user_ID") int user_ID) throws MainException {
+    public List<PostDTO> getAllPostsByUserID(@PathVariable(value = "user_ID") int user_ID){
         return psi.getAllPostsByUserID(user_ID);
+    }
+
+    @GetMapping("/liked_by_user_id/{user_ID}")
+    public List<PostDTO> getAllPostsLikedBy(@PathVariable(value = "user_ID") int user_ID){
+        return psi.getAllPostsLikedBy(user_ID);
     }
 
     @PostMapping("/create_post")

@@ -89,6 +89,20 @@ public class PostDAOImplem implements PostDAO {
         return jdbc.query(sql, new Object[]{user_ID}, (resultSet, i) -> mapRowPostDTO(resultSet));
     }
 
+    public List<PostDTO> getAllPostsLikedBy(int user_ID){
+        String sql = "SELECT post_ID, username, title, content, `path`, date_time_created, number_of_likes FROM posts\n" +
+                "JOIN users\n" +
+                "ON(users.user_ID = posts.user_ID)\n" +
+                "JOIN texts\n" +
+                "ON (texts.text_ID = posts.text_ID)\n" +
+                "JOIN post_pictures\n" +
+                "ON(post_pictures.picture_ID = posts.picture_ID)\n" +
+                "JOIN post_likes\n" +
+                "ON (posts.post_ID = post_likes.target_ID)\n" +
+                "WHERE post_likes.user_ID = ?";
+        return jdbc.query(sql, new Object[]{user_ID}, (resultSet, i) -> mapRowPostDTO(resultSet));
+    }
+
     public void createPost(PostDTO postDTO, int user_ID) throws IOException, MainException {
         java.util.Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());

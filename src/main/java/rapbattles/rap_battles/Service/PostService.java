@@ -13,7 +13,9 @@ public interface PostService {
 
     PostDTO getPostDTOById(int post_ID) throws MainException;
 
-    List<PostDTO> getAllPostsByUserID(int user_ID) throws MainException;
+    List<PostDTO> getAllPostsByUserID(int user_ID);
+
+    List<PostDTO> getAllPostsLikedBy(int user_ID);
 
     void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException;
 
