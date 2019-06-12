@@ -13,8 +13,6 @@ import java.io.IOException;
 @RestController
 public class AvatarController extends BaseController {
 
-    public static final String LOGGED = "logged";
-
     @Autowired
     AvatarServiceImplem uasImplem;
 

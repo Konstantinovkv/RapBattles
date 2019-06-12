@@ -18,8 +18,6 @@ public class CommentController extends BaseController{
     @Autowired
     CommentServiceImplem csi;
 
-    public static final String LOGGED = "logged";
-
     @PostMapping("/comment_post/{post_id}")
     public String writeComment(@PathVariable(value="post_id") int post_ID, @RequestBody Comment comment, HttpSession session) throws ForbiddenException, MainException{
         validateLogged(session);

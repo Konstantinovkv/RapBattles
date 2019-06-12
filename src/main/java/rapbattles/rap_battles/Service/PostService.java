@@ -11,9 +11,13 @@ import java.util.List;
 
 public interface PostService {
 
-    PostDTO getPostById(int post_ID) throws MainException;
-    List<PostDTO> getAllPostsByUserID(int user_ID);
+    PostDTO getPostDTOById(int post_ID) throws MainException;
+
+    List<PostDTO> getAllPostsByUserID(int user_ID) throws MainException;
+
     void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException;
-    void deletePost(int post_ID, String username) throws MainException, ForbiddenException;
+
+    void deletePost(int post_ID, String username, int user_ID) throws MainException, ForbiddenException;
+
     void updatePost(int post_ID, int user_ID, String content) throws NotFoundException, ForbiddenException;
 }

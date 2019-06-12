@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import rapbattles.rap_battles.DAO.CommentDAO;
 import rapbattles.rap_battles.Models.POJO.Comment;
-
+import rapbattles.rap_battles.Models.POJO.Like;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -20,11 +20,24 @@ public class CommentDAOImplem implements CommentDAO {
     @Autowired
     private JdbcTemplate jdbc;
 
+    @Autowired
+    CommentLikeDAOImplem clDAO;
+
     public void writeComment(int user_ID, String content, int post_ID) {
         java.util.Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         String sql = "INSERT INTO comments (user_ID, content, date_time_created, post_ID) VALUES (?,?,?,?)";
         jdbc.update(sql, new Object[]{user_ID, content, timestamp, post_ID});
+    }
+
+    public void incrementNumberOfLikes(int comment_ID){
+        String sql = "UPDATE comments SET number_of_likes = number_of_likes+1 WHERE comment_ID = ?";
+        jdbc.update(sql, new Object[]{comment_ID});
+    }
+
+    public void decrementNumberOfLikes(int comment_ID){
+        String sql = "UPDATE comments SET number_of_likes = number_of_likes-1 WHERE comment_ID = ?";
+        jdbc.update(sql, new Object[]{comment_ID});
     }
 
     public void replyToComment(int user_ID, String content, int post_ID, int reply_to_ID) {
@@ -64,6 +77,10 @@ public class CommentDAOImplem implements CommentDAO {
     }
 
     public void deleteComment(int comment_ID) {
+        List<Like> commentLikes = clDAO.getAllCommentLikes(comment_ID);
+        for (Like commentLike: commentLikes){
+            clDAO.deleteLike(commentLike.getLike_ID());
+        }
         String sql = "DELETE FROM comments WHERE comment_ID=?";
         jdbc.update(sql, new Object[]{comment_ID});
         sql = "DELETE FROM comments WHERE reply_to_ID=?";

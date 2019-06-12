@@ -19,8 +19,6 @@ public class PostController extends BaseController {
     @Autowired
     PostServiceImplem psi;
 
-    public static final String LOGGED = "logged";
-
     @GetMapping("/post_id/{post_ID}")
     public PostDTO getPostById(@PathVariable(value = "post_ID") int post_ID) throws MainException {
         return psi.getPostDTOById(post_ID);
@@ -43,7 +41,7 @@ public class PostController extends BaseController {
     public String deletePost(@PathVariable(value = "post_id") int post_ID, HttpSession session) throws MainException, ForbiddenException {
         validateLogged(session);
         UserDTO userDTO = (UserDTO) session.getAttribute(LOGGED);
-        psi.deletePost(post_ID, userDTO.getUsername());
+        psi.deletePost(post_ID, userDTO.getUsername(),userDTO.getUser_ID());
         return "Post successfully deleted.";
     }
 

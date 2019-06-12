@@ -20,13 +20,15 @@ public class PostDTO {
     private String picPath;
     private java.util.Date date_time_created;
     private String fileStr;
+    private int number_of_likes;
 
-    public PostDTO(int post_ID, String username, String title, String content, String picPath, Date date_time_created) {
+    public PostDTO(int post_ID, String username, String title, String content, String picPath, Date date_time_created, int number_of_likes) {
         this.post_ID = post_ID;
         this.username = username;
         this.title = title;
         this.content = content;
         this.picPath = picPath;
         this.date_time_created = date_time_created;
+        this.number_of_likes = number_of_likes;
     }
 }

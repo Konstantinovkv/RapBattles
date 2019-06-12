@@ -17,4 +17,5 @@ public class Post {
     private int text_ID;
     private int picture_ID;
     private java.util.Date date_time_created;
+    private int number_of_likes;
 }

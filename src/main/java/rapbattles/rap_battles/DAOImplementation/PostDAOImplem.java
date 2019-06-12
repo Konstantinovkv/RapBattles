@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import rapbattles.rap_battles.DAO.PostDAO;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.Models.POJO.Comment;
+import rapbattles.rap_battles.Models.POJO.Like;
 import rapbattles.rap_battles.Models.POJO.Post;
 import rapbattles.rap_battles.ServiceImpl.PostPictureServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
@@ -29,9 +31,18 @@ public class PostDAOImplem implements PostDAO {
     @Autowired
     PostPictureServiceImplem ppsi;
 
+    @Autowired
+    PostLikeDAOImplem plDAO;
+
+    @Autowired
+    CommentDAOImplem commentDAO;
+
+    @Autowired
+    CommentLikeDAOImplem clDAO;
+
     public PostDTO getPostDTOByID(int post_ID) {
         try {
-            String sql = "SELECT post_ID, username, title, content, `path`, date_time_created\n" +
+            String sql = "SELECT post_ID, username, title, content, `path`, date_time_created, number_of_likes\n" +
                     "FROM posts\n" +
                     "JOIN users\n" +
                     "ON(users.user_ID = posts.user_ID)\n" +
@@ -46,9 +57,19 @@ public class PostDAOImplem implements PostDAO {
         }
     }
 
+    public void incrementNumberOfLikes(int post_ID){
+        String sql = "UPDATE posts SET number_of_likes = number_of_likes+1 WHERE post_ID = ?";
+        jdbc.update(sql, new Object[]{post_ID});
+    }
+
+    public void decrementNumberOfLikes(int post_ID){
+        String sql = "UPDATE posts SET number_of_likes = number_of_likes-1 WHERE post_ID = ?";
+        jdbc.update(sql, new Object[]{post_ID});
+    }
+
     public Post getPostByID(int post_ID) {
         try {
-            String sql = "SELECT post_ID, user_ID, title, text_ID, picture_ID, date_time_created FROM posts WHERE post_ID = ?";
+            String sql = "SELECT post_ID, user_ID, title, text_ID, picture_ID, date_time_created, number_of_likes FROM posts WHERE post_ID = ?";
             return (Post) jdbc.queryForObject(sql, new Object[]{post_ID}, new PostMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -56,7 +77,7 @@ public class PostDAOImplem implements PostDAO {
     }
 
     public List<PostDTO> getAllPostsByUserID(int user_ID) {
-        String sql = "SELECT post_ID, username, title, content, `path`, date_time_created\n" +
+        String sql = "SELECT post_ID, username, title, content, `path`, date_time_created, number_of_likes\n" +
                 "FROM posts\n" +
                 "JOIN users\n" +
                 "ON(users.user_ID = posts.user_ID)\n" +
@@ -77,7 +98,19 @@ public class PostDAOImplem implements PostDAO {
         jdbc.update(sql, new Object[]{user_ID, postDTO.getTitle(), timestamp, text_ID, picture_ID});
     }
 
-    public void deletePost(int post_ID) {
+    public void deletePost(int post_ID, int user_ID) {
+        List<Like> postLikes = plDAO.getAllPostLikes(post_ID);
+        for (Like postLike: postLikes){
+            plDAO.deleteLike(postLike.getLike_ID());
+        }
+        List<Comment> comments = commentDAO.getAllCommentsForPost(post_ID);
+        for (Comment comment: comments){
+            List<Like> commentLikes = clDAO.getAllCommentLikes(comment.getComment_ID());
+            for (Like commentLike: commentLikes){
+            clDAO.deleteLike(commentLike.getLike_ID());
+            }
+            commentDAO.deleteComment(comment.getComment_ID());
+        }
         String sql = "DELETE FROM posts WHERE post_ID=?";
         jdbc.update(sql, new Object[]{post_ID});
     }
@@ -91,6 +124,7 @@ public class PostDAOImplem implements PostDAO {
             postDTO.setContent(rs.getString("content"));
             postDTO.setPicPath(rs.getString("path"));
             postDTO.setDate_time_created(rs.getTimestamp("date_time_created"));
+            postDTO.setNumber_of_likes(rs.getInt("number_of_likes"));
             return postDTO;
         }
     }
@@ -98,7 +132,7 @@ public class PostDAOImplem implements PostDAO {
     private PostDTO mapRowPostDTO(ResultSet rs) throws SQLException {
         return new PostDTO(rs.getInt("post_ID"), rs.getString("username"),
                 rs.getString("title"), rs.getString("content"),
-                rs.getString("path"), rs.getTimestamp("date_time_created"));
+                rs.getString("path"), rs.getTimestamp("date_time_created"), rs.getInt("number_of_likes"));
     }
 
     private static final class PostMapper implements RowMapper {
@@ -110,6 +144,7 @@ public class PostDAOImplem implements PostDAO {
             post.setText_ID(rs.getInt("text_ID"));
             post.setPicture_ID(rs.getInt("picture_ID"));
             post.setDate_time_created(rs.getDate("date_time_created"));
+            post.setNumber_of_likes(rs.getInt("number_of_likes"));
             return post;
         }
     }

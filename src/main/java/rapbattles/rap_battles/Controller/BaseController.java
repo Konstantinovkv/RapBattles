@@ -10,11 +10,11 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-import static rapbattles.rap_battles.ServiceImpl.UserServiceImplem.LOGGED;
-
 public abstract class BaseController {
 
     static Logger log = Logger.getLogger(UserController.class.getName());
+
+    public static final String LOGGED = "logged";
 
     @ExceptionHandler({MainException.class})
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
