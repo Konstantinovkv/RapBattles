@@ -13,11 +13,8 @@ public class Sound {
 
     private int sound_ID;
     private String path;
-    private int user_ID;
-    private int post_ID;
 
-    public Sound(String path, int user_ID) {
+    public Sound(String path) {
         this.path = path;
-        this.user_ID = user_ID;
     }
 }

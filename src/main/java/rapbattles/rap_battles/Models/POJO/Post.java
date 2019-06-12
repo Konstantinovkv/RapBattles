@@ -18,4 +18,5 @@ public class Post {
     private int picture_ID;
     private java.util.Date date_time_created;
     private int number_of_likes;
+    private int sound_ID;
 }

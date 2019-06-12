@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import rapbattles.rap_battles.DAOImplementation.PostDAOImplem;
 import rapbattles.rap_battles.DAOImplementation.PostPictureDAOImplementation;
+import rapbattles.rap_battles.DAOImplementation.SoundDAOImplem;
 import rapbattles.rap_battles.DAOImplementation.TextDAOImplem;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
@@ -27,6 +28,9 @@ public class PostServiceImplem implements PostService {
 
     @Autowired
     PostPictureDAOImplementation ppDAO;
+
+    @Autowired
+    SoundDAOImplem soundDAO;
 
     public PostDTO getPostDTOById(int post_ID) throws MainException{
         PostDTO postDTO = postDAO.getPostDTOByID(post_ID);
@@ -58,6 +62,7 @@ public class PostServiceImplem implements PostService {
             throw new NotAuthorisedException("This post is not yours.");
         }
         postDAO.deletePost(post_ID,user_ID);
+        soundDAO.deleteSound(post.getSound_ID());
         textDAO.deleteText(post.getText_ID());
         ppDAO.deletePostPicture(post.getPicture_ID());
     }

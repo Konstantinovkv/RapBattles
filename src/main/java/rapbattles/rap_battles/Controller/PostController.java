@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Text;
+import rapbattles.rap_battles.ServiceImpl.PostPictureServiceImplem;
 import rapbattles.rap_battles.ServiceImpl.PostServiceImplem;
+import rapbattles.rap_battles.ServiceImpl.SoundServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.*;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -17,6 +19,12 @@ public class PostController extends BaseController {
 
     @Autowired
     PostServiceImplem psi;
+
+    @Autowired
+    PostPictureServiceImplem ppsi;
+
+    @Autowired
+    SoundServiceImplem ssi;
 
     @GetMapping("/post_id/{post_ID}")
     public PostDTO getPostById(@PathVariable(value = "post_ID") int post_ID) throws MainException {
@@ -55,5 +63,15 @@ public class PostController extends BaseController {
         UserDTO userDTO = (UserDTO) session.getAttribute(LOGGED);
         psi.updatePost(post_ID,userDTO.getUser_ID(),text.getContent());
         return "Post successfully updated.";
+    }
+
+    @GetMapping(value = "/post_pic/{name}", produces = "image/png")
+    public byte[] downloadPostPic(@PathVariable("name") String imageName)throws IOException{
+        return ppsi.downloadImage(imageName);
+    }
+
+    @GetMapping(value = "/sound/{name}", produces = "audio/mpeg")
+    public byte[] downloadSound(@PathVariable("name") String soundName)throws IOException{
+        return ssi.downloadSound(soundName);
     }
 }
