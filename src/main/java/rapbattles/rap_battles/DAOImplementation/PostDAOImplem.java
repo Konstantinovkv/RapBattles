@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import rapbattles.rap_battles.DAO.PostDAO;
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Comment;
 import rapbattles.rap_battles.Models.POJO.Like;
 import rapbattles.rap_battles.Models.POJO.Post;
@@ -103,13 +104,13 @@ public class PostDAOImplem implements PostDAO {
         return jdbc.query(sql, new Object[]{user_ID}, (resultSet, i) -> mapRowPostDTO(resultSet));
     }
 
-    public void createPost(PostDTO postDTO, int user_ID) throws IOException, MainException {
+    public void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException{
         java.util.Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         int text_ID = textDAO.writeText(postDTO.getContent());
-        int picture_ID = ppsi.uploadPostImage(postDTO.getFileStr());
+        int picture_ID = ppsi.uploadPostImage(postDTO.getFileStr(), userDTO);
         String sql = "INSERT INTO posts (user_ID, title,date_time_created, text_ID, picture_ID) VALUES (?,?,?,?,?)";
-        jdbc.update(sql, new Object[]{user_ID, postDTO.getTitle(), timestamp, text_ID, picture_ID});
+        jdbc.update(sql, new Object[]{userDTO.getUser_ID(), postDTO.getTitle(), timestamp, text_ID, picture_ID});
     }
 
     public void deletePost(int post_ID, int user_ID) {

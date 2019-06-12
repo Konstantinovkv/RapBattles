@@ -1,6 +1,7 @@
 package rapbattles.rap_battles.DAO;
 
 import rapbattles.rap_battles.Models.DTO.PostDTO;
+import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.Models.POJO.Post;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public interface PostDAO {
     void decrementNumberOfLikes(int post_ID);
     List<PostDTO> getAllPostsByUserID(int user_ID);
     List<PostDTO> getAllPostsLikedBy(int user_ID);
-    void createPost(PostDTO postDTO, int user_ID) throws IOException, MainException;
+    void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException;
     void deletePost(int post_ID, int user_ID);
     Post getPostByID(int post_ID);
 }

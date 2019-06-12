@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserAvatar {
+public class Avatar {
 
     private int user_ID;
     private String path;

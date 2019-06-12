@@ -45,7 +45,7 @@ public class PostServiceImplem implements PostService {
     }
 
     public void createPost(PostDTO postDTO, UserDTO userDTO) throws IOException, MainException{
-        postDAO.createPost(postDTO, userDTO.getUser_ID());
+        postDAO.createPost(postDTO, userDTO);
     }
 
     public void deletePost(int post_ID, String username, int user_ID) throws MainException, ForbiddenException{

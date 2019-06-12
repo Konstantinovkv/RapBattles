@@ -2,7 +2,7 @@ package rapbattles.rap_battles.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import rapbattles.rap_battles.Models.DTO.ImageUploadDTO;
+import rapbattles.rap_battles.Models.DTO.UploadDTO;
 import rapbattles.rap_battles.Models.DTO.UserDTO;
 import rapbattles.rap_battles.ServiceImpl.AvatarServiceImplem;
 import rapbattles.rap_battles.Util.Exceptions.MainException;
@@ -17,7 +17,7 @@ public class AvatarController extends BaseController {
     AvatarServiceImplem uasImplem;
 
     @PostMapping("/avatar")
-    public String uploadAvatar(@RequestBody ImageUploadDTO dto, HttpSession session) throws NotLoggedException, IOException, MainException {
+    public String uploadAvatar(@RequestBody UploadDTO dto, HttpSession session) throws NotLoggedException, IOException, MainException {
         validateLogged(session);
         UserDTO user = (UserDTO) session.getAttribute(LOGGED);
         uasImplem.uploadAvatarImage(dto,user);
