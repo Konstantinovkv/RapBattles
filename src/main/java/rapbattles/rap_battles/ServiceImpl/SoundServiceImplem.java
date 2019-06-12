@@ -18,7 +18,7 @@ public class SoundServiceImplem extends UploadService implements SoundService {
 
     public static final String SOUND_URL = "C:\\Users\\Konstantin\\Desktop\\ProjectImages\\Sounds\\";
 
-    public int uploadSound(String soundFile, UserDTO userDTO) throws IOException, MainException{
+    public int uploadSound(String soundFile, UserDTO userDTO) throws IOException, MainException{ //too slow
         return soundDAO.uploadSound(uploadFile(soundFile,userDTO,SOUND_URL,".mp3"));
     }
 
