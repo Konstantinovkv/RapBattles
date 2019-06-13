@@ -89,6 +89,11 @@ public class UserDAOImplem implements UserDAO {
         jdbc.update(sql, new Object[]{userDTO.getUsername()});
     }
 
+    public void changePassword(String new_password, int user_ID, String salt){
+        String sql = "UPDATE users SET password = ?, second_password = ?, salt = ? WHERE user_ID = ?";
+        jdbc.update(sql, new Object[]{new_password, new_password, salt, user_ID});
+    }
+
     private static final class UserMapper implements RowMapper {
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
             User user = new User();

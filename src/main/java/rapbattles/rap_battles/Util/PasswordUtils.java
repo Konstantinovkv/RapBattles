@@ -43,23 +43,12 @@ public class PasswordUtils {
     }
 
     public static String generateSecurePassword(String password, String salt) {
-        String returnValue;
         byte[] securePassword = hash(password.toCharArray(), salt.getBytes());
-
-        returnValue = Base64.getEncoder().encodeToString(securePassword);
-
-        return returnValue;
+        return Base64.getEncoder().encodeToString(securePassword);
     }
 
-    public static boolean verifyUserPassword(String providedPassword,
-                                             String securedPassword, String salt)
-    {
-        boolean returnValue;
-
+    public static boolean verifyUserPassword(String providedPassword, String securedPassword, String salt) {
         String newSecurePassword = generateSecurePassword(providedPassword, salt);
-
-        returnValue = newSecurePassword.equalsIgnoreCase(securedPassword);
-
-        return returnValue;
+        return newSecurePassword.equalsIgnoreCase(securedPassword);
     }
 }

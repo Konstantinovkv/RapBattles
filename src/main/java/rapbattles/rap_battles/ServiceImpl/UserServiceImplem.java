@@ -21,7 +21,7 @@ import java.util.regex.Pattern;
 public class UserServiceImplem implements UserService {
 
     @Autowired
-    UserDAOImplem dao;
+    UserDAOImplem userDAO;
 
     @Autowired
     ActivationCodeDAOImplem activationDao;
@@ -41,7 +41,7 @@ public class UserServiceImplem implements UserService {
         validateUsernameAndEmail(user);
         checkIfUsernameOrEmailExists(user);
         validateAndGenerateSecurePassword(user);
-        dao.registerUser(user);
+        userDAO.registerUser(user);
         session.setAttribute(LOGGED, user);
         return emailAndConfirmation(user);
     }
@@ -54,11 +54,34 @@ public class UserServiceImplem implements UserService {
         return checkPassword(user, session);
     }
 
+    //changes user password
+    public void changePassword(User user, HttpSession session) throws MainException {
+        if (user.getSecond_password().equals(user.getPassword())){
+            throw new InvalidPasswordException("New password cannot match old password.");
+        }
+        UserDTO userDTO = (UserDTO) session.getAttribute(LOGGED);
+        boolean passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), userDAO.findUserByEmail(userDTO.getEmail()).getPassword(),
+                userDAO.findUserByEmail(userDTO.getEmail()).getSalt());
+        if (passwordMatch){
+            if (validatePassword(user.getSecond_password())) {
+                user = generateSecureChangePassword(user);
+                userDAO.changePassword(user.getPassword(), userDTO.getUser_ID(),user.getSalt());
+            }
+            else{
+                throw new InvalidPasswordException("Password must be 8 characters or more, have at least one upper and lower case character" +
+                        " and have at least 1 special character and digit and no spaces.");
+            }
+        }
+        else{
+            throw new InvalidPasswordException("The password you have entered is wrong.");
+        }
+    }
+
     @Override
     public int removeUser(HttpSession session) {
         UserDTO user = (UserDTO) session.getAttribute(LOGGED);
         int id = user.getUser_ID();
-        dao.deleteUserByID(user.getUser_ID());
+        userDAO.deleteUserByID(user.getUser_ID());
         return id;
     }
 
@@ -74,24 +97,24 @@ public class UserServiceImplem implements UserService {
     //Checks if the correct password has been entered.
     private UserDTO checkPassword(User user, HttpSession session) throws MainException {
         boolean passwordMatch = false;
-        if (dao.findUserByUsernameDTO(user.getUsername()) == null){
-            passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), dao.findUserByEmail(user.getEmail()).getPassword(),
-                    dao.findUserByEmail(user.getEmail()).getSalt());
+        if (userDAO.findUserByUsernameDTO(user.getUsername()) == null){
+            passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), userDAO.findUserByEmail(user.getEmail()).getPassword(),
+                    userDAO.findUserByEmail(user.getEmail()).getSalt());
         }
-        if (dao.findUserByEmailDTO(user.getEmail())==null){{
-            passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), dao.findUserByUsername(user.getUsername()).getPassword(),
-                    dao.findUserByUsername(user.getUsername()).getSalt());
+        if (userDAO.findUserByEmailDTO(user.getEmail())==null){{
+            passwordMatch = PasswordUtils.verifyUserPassword(user.getPassword(), userDAO.findUserByUsername(user.getUsername()).getPassword(),
+                    userDAO.findUserByUsername(user.getUsername()).getSalt());
         }}
         if (passwordMatch) {
-            if(dao.findUserByUsernameDTO(user.getUsername()) == null) {
-                session.setAttribute(LOGGED, dao.findUserByEmailDTO(user.getEmail()));
+            if(userDAO.findUserByUsernameDTO(user.getUsername()) == null) {
+                session.setAttribute(LOGGED, userDAO.findUserByEmailDTO(user.getEmail()));
                 session.setMaxInactiveInterval(-1);
-                return dao.findUserByEmailDTO(user.getEmail());
+                return userDAO.findUserByEmailDTO(user.getEmail());
             }
-            if(dao.findUserByEmailDTO(user.getEmail()) == null) {
-                session.setAttribute(LOGGED, dao.findUserByUsernameDTO(user.getUsername()));
+            if(userDAO.findUserByEmailDTO(user.getEmail()) == null) {
+                session.setAttribute(LOGGED, userDAO.findUserByUsernameDTO(user.getUsername()));
                 session.setMaxInactiveInterval(-1);
-                return dao.findUserByUsernameDTO(user.getUsername());
+                return userDAO.findUserByUsernameDTO(user.getUsername());
             }
         }
         else {
@@ -102,14 +125,14 @@ public class UserServiceImplem implements UserService {
 
     //Checks if the login info (username or email) are correct or existing.
     private void checkUsernameOrEmail(User user) throws MainException {
-        if (dao.findUserByEmailDTO(user.getEmail())==null){
-            if(dao.findUserByUsernameDTO(user.getUsername()) == null){
+        if (userDAO.findUserByEmailDTO(user.getEmail())==null){
+            if(userDAO.findUserByUsernameDTO(user.getUsername()) == null){
                 throw new WrongEmailOrPasswordException("Wrong username, email or password.");
             }
         }
 
-        if (dao.findUserByUsernameDTO(user.getUsername()) == null){
-            if(dao.findUserByEmailDTO(user.getEmail()) == null){
+        if (userDAO.findUserByUsernameDTO(user.getUsername()) == null){
+            if(userDAO.findUserByEmailDTO(user.getEmail()) == null){
                 throw new WrongEmailOrPasswordException("Wrong username, email or password.");
             }
         }
@@ -118,13 +141,13 @@ public class UserServiceImplem implements UserService {
     //Checks if he account has been verified by email.
     private void checkIfAccountIsActivated(User user) throws MainException {
         checkIfUserExists(user);
-        if (dao.findUserByEmailDTO(user.getEmail())==null){
-            if(!dao.findUserByUsernameDTO(user.getUsername()).isActivated()){
+        if (userDAO.findUserByEmailDTO(user.getEmail())==null){
+            if(!userDAO.findUserByUsernameDTO(user.getUsername()).isActivated()){
                 throw new AccountNotActivatedException("Your account is not activated.");
             }
         }
-        if (dao.findUserByUsernameDTO(user.getUsername())==null){
-            if(!dao.findUserByEmailDTO(user.getEmail()).isActivated()){
+        if (userDAO.findUserByUsernameDTO(user.getUsername())==null){
+            if(!userDAO.findUserByEmailDTO(user.getEmail()).isActivated()){
                 throw new AccountNotActivatedException("Your account is not activated.");
             }
         }
@@ -146,7 +169,7 @@ public class UserServiceImplem implements UserService {
 
     //Checks if the user exists.
     private void checkIfUserExists(User user) throws MainException {
-        if (dao.findUserByUsername(user.getUsername()) == null&&dao.findUserByEmail(user.getEmail()) == null) {
+        if (userDAO.findUserByUsername(user.getUsername()) == null&& userDAO.findUserByEmail(user.getEmail()) == null) {
             throw new InvalidUsernameOrEmailException("This user does not exist.");
         }
     }
@@ -163,21 +186,31 @@ public class UserServiceImplem implements UserService {
 
     //Checks if username or email have already been used before to register an account.
     private void checkIfUsernameOrEmailExists(User user) throws MainException{
-        if (dao.findUserByUsernameDTO(user.getUsername()) != null) {
+        if (userDAO.findUserByUsernameDTO(user.getUsername()) != null) {
             throw new InvalidUsernameOrEmailException("This username is already taken.");
         }
-        if (dao.findUserByEmailDTO(user.getEmail()) != null) {
+        if (userDAO.findUserByEmailDTO(user.getEmail()) != null) {
             throw new InvalidUsernameOrEmailException("You have already registered with this email.");
         }
     }
 
+    private User generateSecureChangePassword(User user){
+        String salt = PasswordUtils.getSalt(30);
+        String securedPassword = PasswordUtils.generateSecurePassword(user.getSecond_password(), salt);
+        user.setPassword(securedPassword);
+        user.setSecond_password(securedPassword);
+        user.setSalt(salt);
+        return user;
+    }
+
     // Generates secure password with salt.
-    private void generateSecurePassword(User user){
+    private User generateSecurePassword(User user){
         String salt = PasswordUtils.getSalt(30);
         String securedPassword = PasswordUtils.generateSecurePassword(user.getPassword(), salt);
         user.setPassword(securedPassword);
         user.setSecond_password(securedPassword);
         user.setSalt(salt);
+        return user;
     }
 
     // Validates if the password matches the requirements.
@@ -214,8 +247,8 @@ public class UserServiceImplem implements UserService {
     private UserDTO emailAndConfirmation(User user){
         String activation_code = getRandomString();
         new Thread(new EmailSender(user.getEmail(),user.getUsername(),activation_code)).start();
-        activationDao.uploadActivationCode(dao.findUserByUsernameDTO(user.getUsername()).getUser_ID(),activation_code);
-        return dao.findUserByEmailDTO(user.getEmail());
+        activationDao.uploadActivationCode(userDAO.findUserByUsernameDTO(user.getUsername()).getUser_ID(),activation_code);
+        return userDAO.findUserByEmailDTO(user.getEmail());
     }
 
     //activates account.
@@ -223,7 +256,7 @@ public class UserServiceImplem implements UserService {
         if (activationDao.findUserIdByActivationCode(activation_code)==null){
             throw new WrongActivationCodeException("The activation code is wrong.");
         }
-        UserDTO userDTO = dao.findUserByID(activationDao.findUserIdByActivationCode(activation_code).getUser_ID());
-        dao.setActiveToTrue(userDTO);
+        UserDTO userDTO = userDAO.findUserByID(activationDao.findUserIdByActivationCode(activation_code).getUser_ID());
+        userDAO.setActiveToTrue(userDTO);
     }
 }

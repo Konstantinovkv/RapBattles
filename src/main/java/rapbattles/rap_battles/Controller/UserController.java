@@ -44,5 +44,12 @@ public class UserController extends BaseController{
         return usi.viewUserAvatarByID(user_ID);
     }
 
+    @PostMapping("/change_password")
+    public String changePassword(@RequestBody User user, HttpSession session) throws ForbiddenException,MainException{
+        validateLogged(session);
+        usi.changePassword(user,session);
+        return "Password changed successfully";
+    }
+
 
 }
